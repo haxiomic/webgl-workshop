@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)http://madebyevan.com/webgl-water/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <title>WebGL Water</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <script src="./WebGL Water_files/OES_texture_float_linear-polyfill.js"></script><style type="text/css"></style>
+  <script src="./WebGL Water_files/lightgl.js"></script>
+  <script src="./WebGL Water_files/cubemap.js"></script>
+  <script src="./WebGL Water_files/renderer.js"></script>
+  <script src="./WebGL Water_files/water.js"></script>
+  <script src="./WebGL Water_files/main.js"></script>
+  <style type="text/css">
+    body { font: 13px/140% Arial, sans-serif; background: black; color: white; overflow: hidden; }
+    a { color: inherit; cursor: pointer; }
+    img { display: none; }
+    ul { padding: 0 0 0 20px; }
+    h1 { font: bold italic 30px/30px Georgia; text-align: center; }
+    h2 { font: bold italic 17px/17px Georgia; padding-top: 10px; }
+    small { display: block; font-size: 11px; line-height: 15px; }
+    canvas { position: absolute; top: 0; left: 0; }
+    #help { position: absolute; top: 0; right: 0; bottom: 0; width: 280px; padding-right: 20px; overflow: auto; }
+    #loading { position: absolute; left: 0; top: 50%; right: 300px; text-align: center; margin-top: -8px; }
+    @media (max-width: 600px) {
+      small { font-size: 8px; line-height: 10px; }
+      #help { width: 100px; font-size: 10px; line-height: 12px; }
+    }
+  </style>
+</head><body>
+  <div id="loading"></div>
+  <div id="help">
+  </div>
+  <img id="tiles" src="./WebGL Water_files/tiles.jpg">
+  <img id="xneg" src="./WebGL Water_files/xneg.jpg">
+  <img id="xpos" src="./WebGL Water_files/xpos.jpg">
+  <img id="ypos" src="./WebGL Water_files/ypos.jpg">
+  <img id="zneg" src="./WebGL Water_files/zneg.jpg">
+  <img id="zpos" src="./WebGL Water_files/zpos.jpg">
+
+
+<!-- keyboard steal fix -->
+  <script type="text/javascript">
+    window.addEventListener("keydown", function(e){
+      window.parent.Reveal.triggerKey(e.which || e.keyCode);
+    }, false);
+  </script>
+
+  </body></html>

@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<title>Introduction to WebGL</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/highlight/railscasts.css">
+
+		<style type="text/css">
+			.clouds-slide h1,
+			.clouds-slide h2,
+			.clouds-slide h3,
+			.clouds-slide h4,
+			.clouds-slide h5,
+			.clouds-slide h6{
+				background-color: rgba(0, 0, 0, 0.0);
+				padding: 30px 40px;
+				display: block;
+				border-radius: 5px;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0px 0px 1px rgba(0, 0, 0, .1);
+				color: rgba(255, 255, 255, 1.0);
+
+				-webkit-user-select: none; /* Chrome/Safari */        
+				-moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* IE10+ */
+
+				/* Rules below not implemented in browsers yet */
+				-o-user-select: none;
+				user-select: none;
+			}
+
+
+			.reveal section.clouds-slide{			}
+
+			.reveal section.clouds-slide .content{
+				background-color: rgba(255,255,255,.3);
+				border-radius: 4px;
+
+				color: #444;
+				padding: 10px 40px;
+			}
+
+			.reveal section.clouds-slide .content a{
+				color: #0A95FF;
+			}
+
+			.reveal section h1{
+				margin-bottom: 30px;
+			}
+
+			.reveal section pre{
+				overflow: hidden;
+				width: auto;
+				font-size: 0.53em;
+			}
+
+			.reveal section pre.inline{
+				display: inline;
+				margin: 0 10px;
+			}
+
+			.reveal section pre code{
+				display: inherit;
+				padding: 10px 20px;
+				border-radius: 2px;
+			}
+
+			.reveal section pre.inline code{
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+
+			.reveal section .content{
+				text-align: left;
+				color: #666;
+				font-size: 1.0em;
+			}
+
+			.reveal section .content ul{
+				display: block;
+				list-style-type: none;
+				padding: 0px;
+				margin: 0px;
+			}
+
+			.reveal section .content ul.inset{
+				margin-left: 60px;
+			}
+
+			.reveal section .content ul li{
+				margin-bottom: 30px;
+			}
+
+			.reveal section .content ul li:before{
+				content: '';
+			}
+
+			.reveal section .content ul li ul{
+				font-size: 0.75em;
+				margin-top: 20px;
+				margin-left: 40px;
+			}
+
+			.reveal section .content ul li ul li{
+				margin-bottom: 15px;
+			}
+
+			.reveal section .note{
+				font-family: Georgia, Times, 'Times New Roman', serif;
+				font-size: 0.5em;
+				font-style: italic;
+				line-height: 1.0;
+				color: #AAA;
+			}
+
+			.reveal section .caption{
+				font-size: 0.75em;
+				margin: 0;
+			}
+
+			.reveal section.padless{
+				padding: 0 !important;
+			}
+
+			.reveal section.disable-center{
+				top: auto !important;
+			}
+
+			.reveal section.align-bottom{
+				top: auto !important;
+				bottom: 0px !important;
+			}
+
+			.reveal section.demo,
+			.reveal section.windowed-demo{
+				padding: 0 !important;
+				top: auto !important;
+				bottom: 0px !important;
+			}
+
+			.slide-background.dark-bg, .slide-background.windowed-demo{
+				background-color: #222;
+			}
+
+			.slide-background.black-bg{
+				background-color: black;
+			}
+		</style>
+
+		<style type="text/css">
+
+		html.notes-mode{
+			width: initial;
+			height: initial;
+			overflow: initial;
+		}
+
+		html.notes-mode body{
+			padding: 30px 40px 30px 40px;
+			margin: 0;
+			box-sizing: border-box;
+			overflow: scroll;
+			width: initial;
+			height: initial;
+
+			font-size: 30px;
+		}
+
+		html.notes-mode .notes{
+			margin-bottom: 100px;
+			line-height: 1.5;
+		}
+
+		html.notes-mode .notes h1{
+			font-size: 35px;
+			margin-bottom: 0px;
+		}
+		</style>
+	</head>
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+				<section id="cover-slide" class="clouds-slide" data-background-demo="Clouds" data-click-through="true">
+					<h3 class="cover-heading">Introduction to WebGL</h3>
+
+					<aside class="notes">*real time volume rendering*</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>What is WebGL?</h1>
+
+					<div class="content">
+						<ul>
+							<li>A browser feature that lets you execute code on the GPU</li>
+							<li>The coolest thing to happen to the web since the GIF</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- WebGL is a recently added browser feature that lets you execute code on the GPU
+						- I think it's the coolest thing to happen to the web since the GIF
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>GPUs are Parallel Processors</h1>
+
+					<div class="content">
+						<ul>
+							<li>CPUs execute in serial, each instruction one after the other</li>
+							<li>GPUs execute in parallel, multitudes of instructions executed simultaneously</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- And it's cool because GPUs are parallel processors
+						- Where CPUs have to churn through each instruction one after the other, GPUs get to execute loads of instructions simultaneously
+					</aside> 
+				</section>
+
+				<section class="disable-center">
+					<h1>GPUs are Parallel Processors</h1>
+
+					<div class="content">
+						<ul>
+							<li>Modern GPUs can offer <b>~5 trillion FLOPS!</b></li>
+							<li>Modern CPUs can offer <b>~100 billion FLOPS</b></li>
+							<li>GPUs are very well suited to certain types of problems but completely useless at others</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- Now this has an upside and a downside, the upside is 5 trillion floating point operations per second
+						- Your CPU on the other hand will only get you a measly 100 billion
+						- The downside is GPUs simply cannot tackle certain types of problems effectively, these are problems where it's absolutely necessary that the computation is done in serial
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>GPUs are Parallel Processors</h1>
+					<div class="content">
+						<ul>
+							<li>If your problem can be divided up into many independent but similar tasks, it'll run faster on a GPU</li>
+							<li>For example
+								<ul>
+									<li>Tracing the path of light as it bounces around a scene</li>
+									<li>Fluid physics simulation</li>
+									<li>Video processing</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- If you can break up your task into many independent but similar tasks, a GPU will handle them faster than a CPU
+						- Fortunately, lots of problems fall into this classification - and importantly, lots of the cool problems such:
+						Tracing light rays for computing illumination, fluid physics, ridgid body physics, quantum physics and video processing.
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>Are they only for graphics?</h1>
+					<div class="content">
+						<ul>
+							<li>WebGL was designed for handling graphics but it can be coerced into general purpose computation</li>
+							<li>The upcoming <i>WebCL</i>, however, was designed for general purpose computation</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- WebGL was designed for handling graphics but it can be coerced into general purpose computation
+						- The upcoming <i>WebCL</i>, however, was designed for general purpose computation
+					</aside>
+				</section>
+
+				<section>
+					<h1>Demos</h1>
+				</section>
+
+				<section class="demo dark-bg" data-background-iframe="iframe-demos/WebGL%20Water.html" data-destroy-background="true" data-click-through="true">
+					<!-- <iframe class="stretch" data-src=""></iframe> -->
+					<h6 class="caption">WebGL Water - Evan Wallace</h6>
+
+					<aside class="notes">
+						- Everything here is handled on the GPU
+						- Wave simulation
+						- Caustics, where we're simulating light as it traces through the scene
+					</aside>
+				</section>
+
+				<section class="demo dark-bg" data-background-iframe="iframe-demos/webgl-fluid/index.html" data-destroy-background="true" data-click-through="true">
+					<!-- <iframe class="stretch" data-src=""></iframe> -->
+					<h6 class="caption">WebGL Fluid Simulation</h6>
+
+					<aside class="notes">
+						- This is an example of a fluid simulation on the GPU
+						- We can turn it up to 1 million particles and the GPU doesn't break a sweat
+						- It's simply impossible to get this performance on the CPU today, especially if we're using javascript
+					</aside>
+				</section>
+
+				<section class="demo dark-bg" data-background-demo="Seascape" data-click-through="true">
+					<h6 class="caption" style="">Seascape - Alexander Alekseev</h6>
+
+					<aside class="notes">
+						- Ray marching
+					</aside>
+				</section>
+
+				<section class="demo dark-bg" data-background-demo="Hypercomplex" data-click-through="true">
+					<h6 class="caption" style="">Hypercomplex - Alexander Alekseev</h6>
+
+					<aside class="notes">
+						- 3D fractal
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<div class="content">
+						<ul>
+							<li>Take a <pre class="inline"><code data-trim>&lt;canvas&gt;</code></pre> element and grab a WebGL context <pre><code data-trim>var gl = canvas.getContext("webgl");</code></pre></li>
+						</ul>
+					</div>
+
+					<canvas class="stretch" style="border: 1px solid #AAA;"></canvas>
+					<aside class="notes"> 
+						- Alright, I'm going to have a brief run through how you start using WebGL to run GPU programs.
+						- The first thing you do is create a canvas element, the canvas element is central to using WebGL in the browser, it's the only way to get access to the WebGL API
+						- To access WebGL you request a WebGL context object from the canvas. Take care of it, it's you're entire line of communication will the WebGL API
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<div class="content">
+						<ul>
+							<li>Compile and upload your GPU code
+								<pre><code class="glsl">//gradient pixel shader glsl
+varying vec2 uv;
+void main(){
+	gl_FragColor = vec4(uv.x, uv.y, 0.0, 1.0);
+}</code></pre>
+								<!--<pre><code class="glsl">//do nothing geometry shader
+varying vec2 uv;
+void main(void){
+	uv = (position.xy + vec2(1.0))*.5;
+	gl_Position = vec4(position, 1.0);
+}</code></pre>-->
+								<pre><code class="javascript">var pixelShader = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(pixelShader, pixelShaderSrc);
+gl.compileShader(pixelShader);
+
+var program = gl.createProgram();
+gl.attachShader(program, geometryShader);
+gl.attachShader(program, pixelShader);
+gl.linkProgram(program);</code></pre>
+							</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- The top part is the GPU program we're going to execute written in 'GLSL'. GLSL is similar in design to C but you've got a few new types and there's no pointers to worry about. It's much stricter than javascript! No forgetting semi-colons here.
+						- This code is a pixel shader, it's responsible for deciding the color of a given pixel, this is done by setting the value of the built in gl_FragColor variable. It's a 'vec4' which means it has 4 values within it: Red, Greed, Blue and Alpha. So in this case, we're setting the red channel to the pixels position in x and the green channel to the pixels position in y. So we should get a nice gradient. Blue is set to 0 and alpha, 1.
+						- When we create a shader we have to tell the machine to compile it and ship it off to the GPU, we then get a reference back in the form of a WebGL program object.
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<div class="content">
+						<ul>
+							<li>Upload geometry<br>
+								<pre><code data-trim class="javascript">var vertices = [
+	 0.0,  1.0,
+	-1.0, -1.0,
+	 1.0, -1.0
+];
+
+vertices.elementsPerVertex = 2;
+
+var vertexBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+//tell the GPU about the format of the vertices
+var attribPositionLoc = gl.getAttribLocation(program, "position");
+gl.enableVertexAttribArray(attribPositionLoc);
+gl.vertexAttribPointer(attribPositionLoc, vertices.elementsPerVertex, gl.FLOAT, false, 0, 0);</code></pre>
+							</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- Webgl will not draw anything until you give it geometry, we're uploading the vertices of a triangle.
+						- Webgl can only draw triangles, lines and point, no quads, no circles or anything else.
+						- The webgl API is a state machine, when we want to modify this vertexBuffer object, we can't just perform operations directly on it. We have to tell WebGL to select the object and then tell it to perform operations, this makes for some very tedious code.
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<div class="content">
+						<ul>
+							<li>Draw!
+								<pre><code class="javascript">gl.drawArrays(gl.TRIANGLES, 0, vertices.length / vertices.elementsPerVertex);</code></pre></li>
+						</ul>
+					</div>
+
+					<canvas class="fragment" style="border: 1px solid #AAA;" data-demo="Triangle1" width="960" height="303"></canvas>
+
+					<aside class="notes">
+						- Now we've uploaded the shaders and geometry we're ready to draw.
+						- The purpose of the geometry is to mark the pixels to execute the shader on.
+						- That is all WebGL does, for the javascript world it's a very primitive API.
+						- (next)
+						- So here's the gradient I was talking about, as the x position increases so does the red and as the y increases, so does the green.
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<div class="content">
+						A little dull, let's add time into our GPU <b>pixel shader</b>
+						<pre><code id="triangle2-live-fs" class="glsl" contenteditable>uniform float time;
+uniform vec2 resolution;
+varying vec2 uv;
+void main(){
+	vec3 col = vec3(0);
+        float r = distance(uv, vec2(.5));
+	col.r = pow(sin(time + r), 4.);
+	col.g = cos(time + uv.y + r)*.5 + .5;
+	col.b = sin(time * 2.0)*.5 + .5;
+	gl_FragColor = vec4(col, 1.0);
+}</code></pre>
+						<span style="text-align:right; display: block;" class="note">edit me</span>
+					</div>
+
+					<aside class="notes">
+						- variables qualified with 'uniform' can be set in javascript, so every frame we now pass the current time in seconds
+						- We're now coloring the pixels base on some interesting functions
+						- col.b, the blue component of the pixel is set to be sin(time) something, so it'll go back and forth between full blue and no blue.
+						- and its a similar story for the others
+						- (show result)
+						- interesting
+						- it's pretty much a case of making something up, for example, lets try something like multipling the radial distance here in the blue channel.
+						- weird.
+					</aside>
+				</section>
+
+				<section class="disable-center" id="triangle2-slide">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<canvas class="stretch" style="border: 1px solid #AAA;" data-demo="Triangle2"></canvas>
+				</section>
+
+				<section class="disable-center">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<div class="content">
+						<ul>
+							<li>We can transform the shape in the <b>geometry shader</b></li>
+							<li>Rotation
+$$\begin{bmatrix}
+x^\prime\\y^\prime 
+\end{bmatrix} = \begin{bmatrix}
+cos(\theta) & sin(\theta) \\ 
+-sin(\theta) & cos(\theta)
+\end{bmatrix} \begin{bmatrix}
+x\\y
+\end{bmatrix}$$
+							</li>
+							<li>Scale
+$$\begin{bmatrix}
+x^\prime\\y^\prime 
+\end{bmatrix} = S \begin{bmatrix}
+x\\y
+\end{bmatrix}$$
+							</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- Where the pixel shader operated in parallel on the pixels, a geometry shader operates in parallel on the vertices.
+						- There are only two types of shaders, pixel shaders and geometry shaders. They're also known as fragment shaders and vertex shaders.
+						- Notice you have to do all the math yourself, there's no handy built in rotate function.
+					</aside>
+
+				</section>
+
+				<section class="disable-center">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<div class="content">
+						Rotating and scaling geometry in a shader
+						<pre><code id="triangle3-live-vs" class="glsl" contenteditable>attribute vec2 position;
+uniform float time;
+uniform vec2 resolution;
+varying vec2 uv;
+void main(){
+	vec2 p = position.xy;
+	uv = (p + vec2(1.0))*.5; //converts from clip space to graph space
+	mat2 transformationMatrix = mat2(
+		cos(time), -sin(time),
+		sin(time), cos(time)
+	);
+	float invAspect = resolution.y / resolution.x;
+	vec2 scale = vec2(invAspect, 1.0) * .7;
+	p = transformationMatrix * p * scale;
+	gl_Position = vec4(p, 0.0, 1.0);
+}</code></pre>
+						<span style="text-align:right; display: block;" class="note">edit me</span>
+					</div>
+
+					<aside class="notes">
+						- Here's that cos() sin() matrix you saw before (go back to previous slide)
+						- Matrix multiplication in GLSL is as easy as regular multiplication in other languages
+						- The angle of rotation has been set to the time in seconds, so the geometry should steadily rotate.
+						- We're also correcting for the aspect ratio now
+					</aside>
+				</section>
+
+				<section class="disable-center" id="triangle3-slide">
+					<div style="position:relative">
+						<h1>Getting Started</h1>
+						<p style="position:absolute; top:-50px; right: 20px; color: #888; font-size: 0.8em;">(* in brief)</p>
+					</div>
+
+					<canvas class="stretch" style="border: 1px solid #AAA;" data-demo="Triangle3"></canvas>
+
+					<aside class="notes">
+						- How about that, now we have a rotating, colored triangle
+						- But it's an interesting point, because what you've seen so far is essentially everything WebGL can offer. There's a little more to talk about with depth and ordering of geometry, but that's pretty much it.
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>That's The Basics</h1>
+					<div class="content">
+						<p>With WebGL you can</p>
+						<ul class="inset">
+							<li>Draw triangles</li>
+							<li>Execute programs to color the pixels within the triangles</li>
+							<li>Execute programs to alter the geometry of the triangles</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- With WebGL you can draw triangles
+						- Execute programs to color the pixels within the triangles
+						- And execute programs to alter the geometry of the triangles
+
+						- However, although it's primitive, it's tremendously powerful
+
+						- Everything you build in WebGL must be constructed from these elements
+					</aside>
+				</section>
+
+				<section class="demo dark-bg" style="position:absolute;width:100%;height:100%;" data-background-demo="Creation" data-click-through="true">
+					<pre class="fragment"><code class="glsl" style="background-color: rgba(35, 35, 35, 0.6);
+  opacity: 0.95;">#define t iGlobalTime
+#define r iResolution.xy
+void mainImage( out vec4 fragColor, in vec2 fragCoord ){
+	vec3 c;
+	float l,z=t;
+	for(int i=0;i<3;i++) {
+		vec2 uv,p=fragCoord.xy/r;
+		uv=p;
+		p-=.5;
+		p.x*=r.x/r.y;
+		z+=.07;
+		l=length(p);
+		uv+=p/l*(sin(z)+1.)*abs(sin(l*9.-z*2.));
+		c[i]=.01/length(abs(mod(uv,1.)-.5));
+	}
+	fragColor=vec4(c/l,t);
+}</code></pre>
+					<h6 class="caption" style="position:absolute;bottom:0;width:100%;">Creation - Silexars</h6>
+
+					<aside class="notes">
+						- This demo is very similar to the what we just did with the triangles, except in this, there are two triangles together making up a rectangle that covers the display
+						- And there's actually no more GLSL code used in this demo that it took us to draw the rotating triangle
+						- (show code)
+						- That's the whole program
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>3D in WebGL</h1>
+					<div class="content">
+						<ul>
+							<li>
+								<div style="margin-bottom: 15px;">Camera Projection Matrix</div>
+								<div style="font-size:0.8em">$$\mathbf{P} = \begin{bmatrix}
+								\tan(\frac{1}{2} F_x) & 0 & 0 & 0 \\ 
+								0 & \tan(\frac{1}{2} F_y) & 0 & 0 \\ 
+								0 & 0 &  \frac{Z_f + Z_n}{Z_n - Z_f} & \frac{2 Z_f Z_n}{Z_n - Z_f} \\ 
+								0 & 0 & -1 & 0
+								\end{bmatrix}$$<br>
+								$F = \text{field of view}$<br>
+								$Z_f = \text{maximum view distance}$<br>
+								$Z_n = \text{minimum view distance}$
+								</div>
+							</li>
+						</ul>
+					</div>
+
+					<aside class="notes"> 
+						- if you want to do 3D stuff, you've got to do all the mathematics yourself
+						- [camera equations, lighting equations]
+						- It can be quite an endevour
+						- This matrix warps our geometry in such a way as to make it appear 3D
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>3D in WebGL</h1>
+					<div class="content">
+						<ul>
+							<li>
+								<div style="margin-bottom: 15px;">Rotate Around Y</div>
+								<div style="font-size:0.8em">$$\begin{bmatrix}x^\prime\\y^\prime\\z^\prime\end{bmatrix} = 
+								\begin{bmatrix}
+									\cos(\theta) & 0 & sin(\theta) \\
+									0            & 1 & 0           \\
+									-sin(\theta) & 0 & \cos(\theta)
+								\end{bmatrix} \begin{bmatrix}x\\y\\z\end{bmatrix}$$
+								</div>
+							</li>
+							<li>
+								<div style="margin-bottom: 15px;">To go from 3D coordinates to 2D screen coordinates</div>
+								$$\mathbf{P} \mathbf{R}_y \vec{X}$$
+							</li>
+						</ul>
+					</div>
+				</section>
+
+				<section class="disable-center" id="triangle4-slide">
+					<h1>3D in WebGL</h1>
+
+					<canvas class="stretch" style="border: 1px solid #AAA;" data-demo="Triangle4"></canvas>
+
+					<aside class="notes">
+						- Triangle now being rotated in 3D and warped by the projection matrix
+					</aside>
+				</section>
+
+				<section>
+					<h2>More Triangles!</h2>
+
+					<aside class="notes">
+						- 1 triangle is boring, lets add some more
+					</aside>
+				</section>
+
+				<section class="disable-center black-bg" id="cube1-slide">
+					<h1>3D in WebGL</h1>
+					<canvas class="stretch" style="border: 1px solid #222;" data-demo="Cube1"></canvas>
+
+					<aside class="notes">
+						- This is essentially the same demo as before but we've added 11 more triangles which we've arranged into the shape of a cube
+						- We've also doing some lighting by brighting a pixel if its triangle is facing a light
+					</aside>
+				</section>
+
+				<section class="padless disable-center">
+					<h6>1 Cube = 445 lines of Javascript and GLSL</h6>
+					<pre class="stretch" style="margin:0;"><code style="font-size: 0.3em; line-height: 1.0;"class="glsl" id="cube1-code"></code></pre>
+
+					<aside class="notes">
+						- Drawback of WebGL: to make this 1 cube took 445 lines of javascript and GLSL
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>Use a library</h1>
+					<div class="content">
+						<div style="margin-bottom: 20px;">Libraries make WebGL much easier to work with</div>
+						<table style="width:100%;">
+							<tr>
+								<td>
+									<h3>3D</h3>
+									<ul class="inset">
+										<li><a href="http://threejs.org">three.js</a></li>
+										<li><a href="http://www.babylonjs.com/">Babylon.js</a></li>
+										<li><a href="http://www.senchalabs.org/philogl/">PhiloGL</a></li>
+									</ul>
+								</td>
+								<td>
+									<h3>2D</h3>
+									<ul class="inset">
+										<li><a href="http://www.pixijs.com/">pixi.js</a></li>
+										<li><a href="http://www.pixijs.com/">two.js</a></li>
+									</ul>
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					<aside class="notes">
+						- Libraries solve some of WebGL's failings
+						- Primarily they simplify working with WebGL, but they also handle browser differences, for which WebGL is highly subject to
+						- WebGL can behave differently from browser to browser and machine to machine
+					</aside>
+				</section>
+
+				<section class="disable-center">
+					<h1>Wrap Up</h1>
+					<div class="content">
+						<ul>
+							<li>WebGL recently became supported in all major browser</li>
+							<li>Access to a parallel processor expands the limit of what's possible in a web application</li>
+							<li>Better to use libraries rather than raw WebGL</li>
+						</ul>
+					</div>
+
+					<aside class="notes">
+						- WebGL recently became supported in all major browser, mobile safari being the last holdout
+						- You can now build applications that simply weren't possible in a web browser before
+						- WebGL's most common use case is games, but it also enables computationally intensive technologies like client-side machine learning
+					</aside>
+				</section>
+
+				<section class="clouds-slide" data-background-demo="Clouds">
+					<h1>Questions?</h1>
+					<div class="content">
+						<p>Code for the slides and demos is on github</p>
+						<p><a href="http://github.com/haxiomic">github.com/haxiomic</a></p>
+						<p><a href="http://twitter.com/haxiomic">@haxiomic</a></p>
+					</div>
+
+					<aside class="notes">
+						- The source code for these slides and demos is commented and on github under my username haxiomic
+						- Questions
+					</aside>
+				</section>
+
+				<!--<section>
+					<h1>Resources</h1>
+					<p>Learning resources, shadertoy, tutorials, library links</p>
+					<p>
+					http://www.codinglabs.net/article_world_view_projection_matrix.aspx
+					http://webglfundamentals.org/
+					</p>
+				</section>-->
+
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			/*
+				Hacky speaker notes view with ?n=1
+			*/
+
+			window.URLParams = (function() {
+			    var match,
+			        pl     = /\\+/g,  // Regex for replacing addition symbol with a space
+			        search = /([^&=]+)=?([^&]*)/g,
+			        decode = function (s) { return decodeURIComponent(s.replace(pl, ' ')); },
+			        query  = window.location.search.substring(1);
+
+			    var urlParams = {};
+			    while (match = search.exec(query))
+			       urlParams[decode(match[1])] = decode(match[2]);
+
+			   	urlParams.get = function(param, defaultValue){
+			   		return typeof urlParams[param] !== "undefined" ? urlParams[param] : defaultValue;
+			   	}
+
+			    return urlParams;
+			})();
+
+			if(parseInt(URLParams.get('n')) === 1){
+				//speaker notes mode
+				var notesContainerEl = document.createElement('div');
+
+				var a = document.querySelectorAll('aside.notes');
+				for(var i = 0; i < a.length; i++){
+					var n = a[i];
+					var headerEl = n.parentElement.querySelector('h1,h2,h3,h4,h5,h6');
+					var title = headerEl ? headerEl.textContent : '';
+
+					var e = document.createElement('div');
+					e.innerHTML = '<h1>'+title+'</h1>'+n.innerHTML.replace(/(?:\r\n|\r|\n)/g, '<br />');
+					e.classList.add('notes');
+
+					notesContainerEl.appendChild(e);
+				}
+
+				//clear body
+				var body = document.querySelector('body');
+				//remove scripts
+				var scripts = body.querySelectorAll('script');
+				for(var i = 0; i < scripts.length; i++){
+					scripts[i].parentNode.removeChild(scripts[i]);
+				}
+
+				body.innerHTML = '';
+				body.appendChild(notesContainerEl);
+
+				var html = document.querySelector('html');
+				html.classList.add('notes-mode');
+			}
+		</script>
+
+		<!-- libraries -->
+		<script src="lib/js/head.min.js"></script>
+		<script src="lib/js/reveal/reveal.js"></script>
+		<script src="lib/js/three/three.min.js"></script>
+		<script src="lib/js/three/shaders/SkyShader.js"></script>
+
+		<!-- scripts and demos -->
+		<script src="js/demo.js"></script>
+		<script src="js/demos/shadertoy-base.js"></script>
+		<script src="js/demos/clouds.js"></script>
+		<script src="js/demos/seascape.js"></script>
+		<script src="js/demos/creation.js"></script>
+		<script src="js/demos/hypercomplex.js"></script>
+		<script src="js/tutorials/triangle-1.js"></script>
+		<script src="js/tutorials/triangle-2.js"></script>
+		<script src="js/tutorials/triangle-3.js"></script>
+		<script src="js/tutorials/triangle-4.js"></script>
+		<script src="js/tutorials/triangle-5.js"></script>
+		<script src="js/tutorials/cube-1.js"></script>
+		
+		<script src="js/revealjs-demo-plugin.js"></script>
+
+		<script type="text/javascript">
+			/* Destroy backgrounds when required */
+			Reveal.addEventListener('slidechanged', function(e){
+				if(
+					e.previousSlide &&
+					e.previousSlide.dataset.hasOwnProperty('destroyBackground') &&
+					e.previousSlide.dataset['destroyBackground'].trim() !== 'false'
+				){
+					var slideIndices = Reveal.getIndices(e.previousSlide);
+					var bgContainer = Reveal.getSlideBackground(slideIndices.h, slideIndices.v);
+					if(!bgContainer) return;
+
+					//clear background content
+					bgContainer.innerHTML = '';
+					//reset flag
+					if(bgContainer.attributes.getNamedItem('data-loaded')){
+						bgContainer.attributes.removeNamedItem('data-loaded');
+					}
+				}
+			}, false);
+
+			/* Enable slide click-through */
+			function handleClickThrough(slide){
+				var slides = document.querySelector('.reveal > .slides');
+				if(
+					slide.dataset.hasOwnProperty('clickThrough') &&
+					slide.dataset['clickThrough'].trim() !== 'false'
+				){
+					slides.style.pointerEvents = 'none';
+				}else{
+					slides.style.pointerEvents = '';
+				}
+			}
+
+			Reveal.addEventListener('slidechanged', function(e){
+				handleClickThrough(e.currentSlide);
+			});
+			Reveal.addEventListener('ready', function(e){
+				handleClickThrough(e.currentSlide);
+			});
+
+
+			/* Live shader editing */
+			//preserves line breaks better than browsers seem to
+			function extractText(html){
+				var ce = document.createElement("PRE");
+				ce.innerHTML = html;
+				var els;
+				//webkit
+				els = ce.querySelectorAll('div');
+				for(var i = 0; i < els.length; i++){
+					var e = els[i];
+					e.outerHTML = '\n' + e.innerHTML;//replace with
+				}
+				//msie
+				els = ce.querySelectorAll('p');
+				for(var i = 0; i < els.length; i++){
+					var e = els[i];
+					e.outerHTML = e.innerHTML + '<br>';//replace with
+				}
+				//$.browser.mozilla || $.browser.opera || $.browser.msie
+				els = ce.querySelectorAll('br');
+				for(var i = 0; i < els.length; i++){
+					var e = els[i];
+					e.outerHTML = '\n';//replace with
+				}
+				return ce.textContent;
+			}
+
+			function liveEdit(editor, slide, func){
+				slide.addEventListener('demo-started', function(e) {
+					var demo = e.detail;
+					var text = extractText(editor.innerHTML) || editor.textContent;
+					if(!text) return;
+					var shader = 'precision mediump float;\n'+text;
+					demo[func](shader);
+				}, false);
+			}
+
+			liveEdit(document.querySelector('#triangle2-live-fs'), document.querySelector('#triangle2-slide'), 'setPixelShader');
+			liveEdit(document.querySelector('#triangle2-live-fs'), document.querySelector('#triangle3-slide'), 'setPixelShader');
+			liveEdit(document.querySelector('#triangle2-live-fs'), document.querySelector('#triangle4-slide'), 'setPixelShader');
+			liveEdit(document.querySelector('#triangle3-live-vs'), document.querySelector('#triangle3-slide'), 'setGeometryShader');
+
+
+			/* Load Resources */
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', 'js/tutorials/cube-1.js');
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState === 4){
+					document.querySelector('#cube1-code').innerHTML = xhr.responseText;
+				}
+			}
+			xhr.send();
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				width: 960,
+			    height: 700,
+
+				controls: false,
+				progress: true,
+				history: true,
+				center: true,
+				overview: false,
+
+				// margin: 0.0,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				viewDistance: 1,
+
+				math: {
+					mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',//'lib/js/mathjax.js',
+					katexScript: 'lib/js/reveal/plugin/math-katex/lib/katex-0.3.0/katex.min.js',
+					katexStylesheet: 'lib/js/reveal/plugin/math-katex/lib/katex-0.3.0/katex.min.css'
+				},
+
+				// Optional reveal.js plugins
+				dependencies: [
+
+					// Syntax highlight for <code> elements
+					{ src: 'lib/js/reveal/plugin/highlight/highlight.pack.js', async: true, callback: function(){ hljs.initHighlightingOnLoad();} },
+
+					{ src: 'lib/js/reveal/plugin/math/math.js', async: true }
+
+				]
+			});
+		</script>
+
+	</body>
+</html>

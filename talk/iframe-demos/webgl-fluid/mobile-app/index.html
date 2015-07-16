@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<title>Fluid Dynamics App</title>
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,300italic,400italic|Source+Serif+Pro:400,600,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="devices.min.css">
+	<style type="text/css">
+	* {
+	  box-sizing: border-box;
+	}
+
+	body {
+	  padding: 0;
+	  margin: 0;
+	  font-family: 'Source Sans Pro', sans-serif;
+	  color: #416884;
+	  color: white;
+	  background-color: #170722;
+	  background: url('blurred-background.png') no-repeat center center fixed;
+			/*background-position: center center;*/
+	  background-size: cover;
+	}
+
+	h1, h2, h3, h4, h5, h6{
+	  font-weight: normal;
+	}
+
+	.header {
+	  text-align: center;
+	  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.35);
+	}
+
+	.content {
+	  max-width: 1024px;
+	  margin: auto;
+	}
+
+	.main {
+	  margin: 40px auto;
+	  padding: 30px 30px;
+	}
+
+	.main .left {
+	  width: 400px;
+	  float: left;
+	}
+
+	.main .right {
+	  overflow: hidden;
+	  min-width: 300px;
+	}
+
+	.background-overlay {
+	  background-color: rgba(255,255,255,0.1);
+			/*background-color: rgba(0,0,0,0.5);*/;
+	}
+
+	.email-form {
+	  margin-top: 40px;
+			/*background: white;*/
+	  padding: 20px;
+	  text-align: center;
+	  border-radius: 4px;
+	}
+
+	.email-form input {
+	  display: inline-block;
+	  height: 50px;
+	  width: 70%;
+	  border: none;
+	  outline: none;
+	  padding: 10px;
+	  font-size: 20px;
+	  border-radius: 4px;
+	  border: 2px solid #E1E9EF;
+	  margin-bottom: 10px;
+	}
+
+	.email-form input.alert{
+	  border: 2px solid rgb(240, 149, 170);
+	  box-shadow: 0px 0px 5px red;
+      transition: border 0.3s, box-shadow 0.3s;
+      -webkit-transition: border 0.3s, box-shadow 0.3s;
+	}	
+
+	.email-form button {
+	  display: inline-block;
+	  height: 50px;
+	  padding: 10px 15px;
+	  cursor: pointer;
+	  color: #fff;
+	  text-decoration: none;
+			/*font-weight: bold;*/
+	  font-size: 17px;
+	  border-radius: 4px;
+	  text-align: center;
+			/*background-color: #569ED2;*/
+			/*border: 2px solid #65B0E7;*/
+	  border: 2px solid white;
+	  background: rgba(255, 255, 255, 0.2);
+	}
+
+	hr {
+	  border: 1px solid rgba(255, 255, 255, 0.1);
+	  border-width: 1px;
+	}
+
+	.marvel-device {
+	  box-sizing: content-box !important;
+	}
+
+	.marvel-device .screen {
+	  background-color: #170722;
+	  background-image: url('fluid-preview.jpg');
+	  background-position: center center;
+	  background-size: cover;
+	}
+
+	.pages-container{
+		position: relative;
+		min-height: 400px;
+	}
+
+	#signup, #signup-complete{
+		position: absolute;
+		top:0;
+		width: 100%;
+		left: 0;
+	}
+	</style>
+
+	<script>
+	  //Google Analytics
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-54755897-1', 'auto');
+	  ga('send', 'pageview');
+	</script>
+</head>
+<body style="background-color: #170722;">
+	<div class="background-overlay">
+		<div class="content main">
+			<div class="left">
+				<!-- device graphic thanks to https://github.com/marvelapp/devices.css -->
+				<div class="marvel-device iphone5s silver">
+				    <div class="top-bar"></div>
+				    <div class="sleep"></div>
+				    <div class="volume"></div>
+				    <div class="camera"></div>
+				    <div class="sensor"></div>
+				    <div class="speaker"></div>
+				    <div class="screen">
+				        <!-- Content goes here -->
+				    </div>
+				    <div class="home"></div>
+				    <div class="bottom-bar"></div>
+				</div>
+			</div>
+			<div class="right">
+				<div class="pages-container">
+					<div id="signup">
+						<div class="header">
+							<h1 id="im-building">I'm building the iOS and Android app at the moment - enter your email address and I'll let you know when it's ready!</h1>
+							<hr>
+							<h3>I hate spam too so I'll only send you a single email when it's ready</h3>
+						</div>
+						<div class="email-form">	
+							<form accept-charset="UTF-8" action="https://formkeep.com/f/83d0032d93ff" method="POST">
+								<input type="text" name="email" size="40" placeholder="email address">
+								<button type="submit">Submit</button>
+								<input type="hidden" name="utf8" value="✓">
+							</form>
+						</div>
+					</div>
+					<div id="signup-complete" style="display:none">
+						<div class="header">
+							<h1 id="great-ill">Great! I'll be in touch</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- email form -->
+	<script type="text/javascript">
+		var submitted = false;
+		$('form').on('submit', function(e){
+		   e.preventDefault();//don't redirect
+		   if(submitted)return;
+		   var $this = $(this);
+           var $emailField = $this.find('input[name=email]');
+           var $submitButton = $this.find('button[type=submit]');
+
+		   if(!$emailField.val().trim()){
+		       $emailField.toggleClass('alert', true);
+		       return;
+		   }
+
+		   var data = {
+		       'email': $emailField.val()
+		   };
+
+		   $.ajax({
+		       url: $this.attr('action'),
+		       type: 'POST',
+		       data: data,
+		       beforeSend: function(){
+		           $submitButton.attr('disabled', 'disabled');  
+		       }
+		   }).done(function(data) {
+		       $submitButton.attr('disabled', false);
+		   });
+
+		   $('#signup').fadeOut();
+		   $('#signup-complete').fadeIn(function(){
+			   PageContainer.updateHeight(true);
+		   });
+
+		   submitted = true;
+		});
+	</script>
+    <!-- track pages-container content height -->
+    <script type="text/javascript">
+		var PageContainer = (function(){
+	    	$pagesContainer = $('.pages-container');
+
+	    	function updateHeight(animate){
+	    		var totalHeight = 0;
+	    		var children = $pagesContainer.children();
+	    		for (var i = 0; i < children.length; i++) {
+	    			var c = $(children[i]);
+	    			if(!c.is(":visible")) continue;
+	    			totalHeight += c.position().top+c.outerHeight(true);
+	    		};
+
+	    		if(animate)
+	    			$pagesContainer.stop(true, false).animate({'min-height':totalHeight}, 300);
+	    		else
+					$pagesContainer.css('min-height', totalHeight);
+		    }
+
+		    updateHeight(false);
+		    $( window ).resize(function(){updateHeight(false);});
+		    return {
+		    	updateHeight: updateHeight
+		    }
+	    })();
+    </script>
+</body>
+</html>
