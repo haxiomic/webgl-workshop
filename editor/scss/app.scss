@@ -191,9 +191,9 @@ hr{
 
 #overlay{
 	display: none;
-	$width: 60%;
-	$height: 97%;
-	$center-x: true;
+	$width: 50%;
+	$height: 100%;
+	$center-x: false;
 	$center-y: true;
 	position: absolute;
 	@if $center-y {
