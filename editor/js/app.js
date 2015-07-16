@@ -1,58 +1,3 @@
-var ShaderPreview = DEMO.CanvasShader.extend(function(canvas){
-	//super
-	ShaderPreview.parent.call(this, canvas, null);
-
-	//find line count in shader header
-	this.lineOffset = -this.pixelShaderHeader.match(/\n/ig).length;
-
-	this.start();
-});
-
-ShaderPreview.SHADER_ERROR = 'shader-error';
-
-ShaderPreview.prototype._compileShaders = function(){
-	try{
-		//super
-		ShaderPreview.parent.prototype._compileShaders.call(this);
-	}catch(e){
-		//process errors
-		switch(e.type){
-			case 'fs':
-			case 'vs':
-			var errorReg = /^\s*[A-Z]+:\s*(\d+)\s*:\s*(\d+)\s*:\s*([^\n]+)/igm;
-
-			//collect errors with regex on msg
-			var errors = [];
-
-			while(true){
-				var line = -1, column = -1, msg = 'unknown error';
-				var result = errorReg.exec(e.msg);
-				if(!result) break;
-
-				if(result){
-					column = parseInt(result[1]);
-					line = parseInt(result[2]) + this.lineOffset;
-					msg = result[3].trim();
-				}else{
-					msg = e.msg;
-				}
-
-				errors.push({
-					line: line,
-					column: column,
-					msg: msg
-				})
-			}
-
-			this.dispatch(ShaderPreview.SHADER_ERROR, {
-				errors: errors,
-				original: e
-			});
-			break;
-		}
-	}
-}
-
 /* ---- Settings ---- */
 var recompileInterval = 300;
 
@@ -70,6 +15,8 @@ editor.on('change', function(e){
 	inputChanged = true;
 });
 
+editor.renderer.container.aceEditor = editor;
+
 /* ---- Preview ---- */
 var canvas = document.querySelector('canvas#preview');
 canvas.width = canvas.clientWidth;
@@ -84,29 +31,33 @@ var errorMarkers = [];
 
 shaderPreview.addEventListener(ShaderPreview.SHADER_ERROR, function(data){
 	var touchedLines = [];
+	var uiMessages = [];
 
 	for(var i = 0; i < data.errors.length; i++){
 		var error = data.errors[i];
-
-		console.log('adding error', error.msg)
+		uiMessages.push('<b>Line '+error.line+'</b>&nbsp; '+error.msg);
 
 		if(error.line < 0) continue;
 
-		editor.getSession().setAnnotations([{
-			row: error.line - 1,
-			column: error.column,
-			text: error.msg,
-			type: "error"
-		}]);
-
-		//add line marker if line doesn't already have one
 		if(touchedLines.indexOf(error.line) === -1){
+			//annotate with error
+			editor.getSession().setAnnotations([{
+				row: error.line - 1,
+				column: error.column,
+				text: error.msg,
+				type: "error"
+			}]);
+
+			//highlight line
 			var hl = editor.getSession().highlightLines(error.line-1, error.line-1, 'error-line', false);
 			errorMarkers.push(hl.id);
 		}
 
 		touchedLines.push(error.line);
 	}
+
+	UI.setMessages(uiMessages, 'failure');
+	uiMessages.length > 0 ? UI.showMessages() : null;
 });
 
 //check for recompile loop
@@ -126,8 +77,16 @@ function compileShader(){
 		s.removeMarker(errorMarkers.pop());
 	}
 
+	UI.hideMessages();
+
 	shaderPreview.setPixelShader(editor.getValue());
-	shaderPreview._compileShaders();
+	
+	var compileSuccess = shaderPreview._compileShaders();
+
+	UI.setEditorStatus(compileSuccess === true ? 'success' : 'failure');
+	if(compileSuccess === true){
+		UI.setMessages(null, 'success');
+	}
 }
 
 compileShader();

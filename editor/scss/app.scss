@@ -1,4 +1,5 @@
 $messagesHeight: 80px;
+$ui-transition: 0.25s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
 *{
 	box-sizing: border-box;
@@ -8,6 +9,13 @@ body{
 	margin: 0;
 	padding: 0;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	background-color: #25282c;
+
+	overflow: hidden;
+
+	position: absolute;
+	width: 100%;
+	height: 100%;
 }
 
 #editor{
@@ -15,22 +23,76 @@ body{
 	top: 0;
 	left: 0;
 	width: 50%;
-	bottom: $messagesHeight;
+	bottom: 0;
 	margin: 0;
+
+	border: 4px solid #373B41;
+
+	-webkit-transition:
+		bottom $ui-transition,
+		border-color $ui-transition;
+
+	transition:
+		bottom $ui-transition,
+		border-color $ui-transition;
+
+	&.success{
+		border-color: #374760;
+	}
+
+	&.failure{
+		border-color: #49373A;
+	}
 }
 
 #messages{
 	position: absolute;
-	bottom: 0;
+	bottom: -$messagesHeight;
 	left: 0;
 	width: 50%;
 	height: $messagesHeight;
 
 	padding: 20px;
+	overflow: hidden;
+	z-index: 1000;
 
 	background-color: #25282c;
 	color: #C5C8C6;
-	border-top: 1px solid #373B41;
+
+	border-top: 0px solid #373B41;
+
+	-webkit-transition:
+		bottom $ui-transition,
+		background-color $ui-transition,
+		color $ui-transition,
+		border-color $ui-transition;
+	transition:
+		bottom $ui-transition,
+		background-color $ui-transition,
+		color $ui-transition,
+		border-color $ui-transition;
+
+	&.success{
+		background-color: #27343E;
+		color: #C3CEDE;
+		border-color: #374760;
+	}
+
+	&.failure{
+		background-color: #312424;
+		color: #E4C9C9;
+		border-color: #49373A;
+	}
+
+	ul{
+		margin: 0;
+		padding-left: 0;
+		list-style: none;
+	}
+
+	li:not(:last-child){
+		margin-bottom: 5px;
+	}
 }
 
 #preview{
@@ -45,7 +107,7 @@ body{
 }
 
 .error-line{
-	background-color: rgba(255, 0, 0, 0.1);
+	background-color: rgba(255, 0, 20, 0.15);
 	position: absolute;
 	z-index: 4;
 }
