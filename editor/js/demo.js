@@ -1,5 +1,5 @@
 /*
-	demo.js
+	demo.js v0.5
 
 	- handy utility for quickly creating WebGL demos
 
@@ -85,12 +85,12 @@ DEMO.Demo.prototype.start = function(){
 	if(this.running) return;
 	this.running = true;
 	this._mainLoop();
-	console.log('demo started');
+	this.dispatch('start', this);
 }
 
 DEMO.Demo.prototype.stop = function(){
 	this.running = false;
-	console.log('demo stopped');
+	this.dispatch('stop', this);
 }
 
 DEMO.Demo.prototype.update = function(time){}
@@ -115,7 +115,7 @@ DEMO.Demo.prototype.onMouseUp = function(e){}
 DEMO.Demo.prototype.onMouseMove = function(e){}
 DEMO.Demo.prototype.onMouseLeave = function(e){}
 
-DEMO.Demo.prototype.listeners = {};//name: [callbacks]
+DEMO.Demo.prototype.listeners = {};//{ name: [callbacks] }
 
 DEMO.Demo.prototype.addEventListener = function(eventName, callback){
 	if(!this.listeners[eventName])
@@ -131,7 +131,6 @@ DEMO.Demo.prototype.removeEventListener = function(eventName, callback){
 			if(cbi < 0) break;
 			this.listeners[eventName].splice(cbi, 1);
 		}
-		
 	}
 }
 
