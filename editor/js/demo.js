@@ -148,7 +148,7 @@ DEMO.Demo.prototype.dispatch = function(eventName, data){
 	
 	for canvas-covering pixel shaders
 */
-DEMO.CanvasShader = DEMO.Demo.extend(function(canvas){
+DEMO.CanvasShader = DEMO.Demo.extend(function(canvas, fragmentShader){
 	DEMO.CanvasShader.parent.call(this, canvas);//super
 
 	//set the canvas attribute dimensions (not just the style dimensions)
@@ -190,15 +190,13 @@ DEMO.CanvasShader = DEMO.Demo.extend(function(canvas){
 		''
 	].join('\n');
 
-	this.pixelShaderSrc = this.pixelShaderHeader + [
+	this.pixelShaderSrc = this.pixelShaderHeader + (!fragmentShader ? [
 		'void main(){',
 		'	vec3 col = vec3(0);',
 
 		'	gl_FragColor = vec4(uv, 0.0, 1.0);',
 		'}'
-	].join('\n');
-
-	this._compileShaders();
+	].join('\n') : fragmentShader);
 
 	/* ---- Upload Geometry ---- */
 	var vertices = [

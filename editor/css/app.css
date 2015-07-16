@@ -4,23 +4,81 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #25282c;
   overflow: hidden;
   position: absolute;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  color: #333; }
+  body.fullscreen #preview {
+    width: 100%; }
+
+hr {
+  border: 0;
+  border-top: 1px solid black; }
+
+#top-bar {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-align-items: center;
+  /* Safari 6.1+ */
+  align-items: center;
+  -webkit-justify-content: space-between;
+  /* Safari 6.1+ */
+  justify-content: space-between;
+  position: absolute;
+  background-color: #25282c;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 55px;
+  padding: 0px 20px;
+  margin: 0px;
+  z-index: 1002;
+  overflow: hidden;
+  color: #CCC;
+  font-size: 16px;
+  border-top: 1px solid #404855;
+  border-bottom: 2px solid #1E232B;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.72); }
+  #top-bar .right-menu {
+    text-align: right;
+    white-space: nowrap; }
+  #top-bar header {
+    font-weight: normal; }
+  #top-bar button {
+    margin: 0;
+    margin-left: 15px;
+    padding: 7px 15px;
+    display: inline;
+    border: none;
+    border-radius: 5px;
+    background-color: #373B41;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-top: 1px solid #404855;
+    border-bottom: 2px solid #1E232B; }
 
 #editor {
   position: absolute;
-  top: 0;
+  top: 55px;
   left: 0;
   width: 50%;
   bottom: 0;
   margin: 0;
+  z-index: 1001;
   border: 4px solid #373B41;
-  -webkit-transition: bottom 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955), border-color 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-  transition: bottom 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955), border-color 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.72);
+  -webkit-transition: bottom 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), border-color 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  transition: bottom 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), border-color 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955); }
   #editor.success {
     border-color: #374760; }
   #editor.failure {
@@ -38,8 +96,8 @@ body {
   background-color: #25282c;
   color: #C5C8C6;
   border-top: 0px solid #373B41;
-  -webkit-transition: bottom 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955), background-color 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955), color 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955), border-color 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-  transition: bottom 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955), background-color 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955), color 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955), border-color 0.25s cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+  -webkit-transition: bottom 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), background-color 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), color 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), border-color 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  transition: bottom 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), background-color 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), color 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), border-color 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955); }
   #messages.success {
     background-color: #27343E;
     color: #C3CEDE;
@@ -64,9 +122,105 @@ body {
   margin: 0;
   background-color: black; }
 
-.error-line {
-  background-color: rgba(255, 0, 20, 0.15);
+#overlay {
+  display: none;
+  position: absolute;
+  top: 1.5%;
+  right: 20%;
+  width: 60%;
+  height: 97%;
+  margin: 0;
+  z-index: 10000;
+  background-color: white;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5); }
+  #overlay .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    line-height: 36px;
+    text-align: center;
+    margin: 20px;
+    z-index: 10001;
+    cursor: pointer;
+    background-color: white;
+    color: #CCC;
+    border: 2px solid #CCC;
+    border-radius: 5px;
+    -webkit-transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out;
+    transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out; }
+    #overlay .close:hover {
+      color: #333;
+      border-color: #333;
+      background-color: #FAFAFA; }
+  #overlay .scroller {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: scroll; }
+
+.page {
+  margin: 40px; }
+  .page hr {
+    border: 1px dashed; }
+  .page h2 {
+    margin-top: 60px; }
+  .page table {
+    width: 100%;
+    border-radius: 5px;
+    border-collapse: collapse;
+    overflow: hidden; }
+    .page table tr:not(:last-child) th {
+      border-bottom: 1px solid #DDD; }
+    .page table tr:not(:last-child) td {
+      border-bottom: 1px solid #EFEFEF; }
+    .page table th {
+      width: 25%;
+      text-align: left;
+      padding: 10px 30px;
+      background-color: #EFEFEF;
+      color: #333; }
+      .page table th .info {
+        display: block;
+        font-weight: normal;
+        font-style: italic;
+        font-size: 0.9em; }
+      .page table th.mono {
+        font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace; }
+    .page table td {
+      padding: 10px 20px;
+      background-color: #FAFAFA;
+      color: #333; }
+      .page table td:nth-child(2) {
+        padding-left: 30px; }
+      .page table td:last-child {
+        padding-right: 30px; }
+    .page table.mono-title th {
+      font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace; }
+    .page table.dark tr:not(:last-child) th {
+      border-bottom: 1px solid #444; }
+    .page table.dark tr:not(:last-child) td {
+      border-bottom: 1px solid #DDD; }
+    .page table.dark th {
+      background-color: #333;
+      color: #CCC; }
+    .page table.dark td {
+      background-color: #EFEFEF;
+      color: #444; }
+
+.ace_error-line {
+  background-color: rgba(255, 0, 20, 0.08);
   position: absolute;
   z-index: 4; }
+
+pre.ace-static {
+  display: block; }
+
+code.ace-static {
+  display: inline-block; }
+  code.ace-static > [class^="ace-"] {
+    background-color: transparent; }
 
 /*# sourceMappingURL=app.css.map */

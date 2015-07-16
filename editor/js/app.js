@@ -8,7 +8,7 @@ var editor = ace.edit('editor');
 editor.setTheme('ace/theme/tomorrow_night');
 editor.getSession().setMode('ace/mode/glsl');
 editor.setShowPrintMargin(false);
-editor.setFontSize(15);
+editor.setFontSize(16);
 editor.$blockScrolling = Infinity;
 editor.focus();
 editor.on('change', function(e){
@@ -17,14 +17,34 @@ editor.on('change', function(e){
 
 editor.renderer.container.aceEditor = editor;
 
+//load shader from local storage
+var localStorageShader = loadShader();
+if(localStorageShader){
+	editor.setValue(localStorageShader, 1);
+	editor.focus();
+} 
+
 /* ---- Preview ---- */
 var canvas = document.querySelector('canvas#preview');
 canvas.width = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
 
 var shaderPreview = new ShaderPreview(canvas);
+
 window.addEventListener('resize', function(e){
-	shaderPreview.setSize(window.innerWidth * .5, window.innerHeight);
+	var isFS = (
+		(document.fullscreenElement && document.fullscreenElement !== null) ||
+		document.mozFullScreen ||
+		document.webkitIsFullScreen ||
+		(window.innerWidth == screen.width && window.innerHeight == screen.height)
+	);
+
+	document.body.classList.toggle('fullscreen', isFS);
+
+	shaderPreview.setSize(
+		window.innerWidth * (!isFS ? 0.5 : 1.0),
+		window.innerHeight
+	);
 });
 
 var errorMarkers = [];
@@ -49,7 +69,7 @@ shaderPreview.addEventListener(ShaderPreview.SHADER_ERROR, function(data){
 			}]);
 
 			//highlight line
-			var hl = editor.getSession().highlightLines(error.line-1, error.line-1, 'error-line', false);
+			var hl = editor.getSession().highlightLines(error.line-1, error.line-1, 'ace_error-line', false);
 			errorMarkers.push(hl.id);
 		}
 
@@ -86,7 +106,16 @@ function compileShader(){
 	UI.setEditorStatus(compileSuccess === true ? 'success' : 'failure');
 	if(compileSuccess === true){
 		UI.setMessages(null, 'success');
+		saveShader();
 	}
+}
+
+function loadShader(){
+	return localStorage.getItem('fragment-shader');
+}
+
+function saveShader(){
+	localStorage.setItem('fragment-shader', editor.getValue());
 }
 
 compileShader();

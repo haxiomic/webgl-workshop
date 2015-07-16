@@ -1,5 +1,14 @@
-$messagesHeight: 80px;
-$ui-transition: 0.25s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+$messages-height: 80px;
+$top-bar-height: 55px;
+$ui-transition: 0.2s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+$std-pad: 40px;
+$std-radius: 5px;
+$std-dark-color: #333;
+
+$font-stack-helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
+$font-stack-mono: "Courier New",Courier,"Lucida Sans Typewriter","Lucida Typewriter",monospace;
+
+
 
 *{
 	box-sizing: border-box;
@@ -8,7 +17,7 @@ $ui-transition: 0.25s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 body{
 	margin: 0;
 	padding: 0;
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family: $font-stack-helvetica;
 	background-color: #25282c;
 
 	overflow: hidden;
@@ -16,17 +25,91 @@ body{
 	position: absolute;
 	width: 100%;
 	height: 100%;
+
+	color: $std-dark-color;
+
+	&.fullscreen{
+		#preview{
+			width: 100%;
+		}
+	}
+}
+
+hr{
+	border: 0;
+	border-top: 1px solid black;
+}
+
+#top-bar{
+	display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+	display: -ms-flexbox;  /* TWEENER - IE 10 */
+	display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+	display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+
+	-webkit-align-items: center; /* Safari 6.1+ */
+	align-items: center;
+
+	-webkit-justify-content: space-between; /* Safari 6.1+ */
+	justify-content: space-between;
+
+	position: absolute;
+	background-color: #25282c;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: $top-bar-height;
+
+	padding: 0px $std-pad * .5;
+	margin: 0px;
+	z-index: 1002;
+	overflow: hidden;
+
+	color: #CCC;
+
+	font-size: 16px;
+
+	border-top: 1px solid #404855;
+	border-bottom: 2px solid #1E232B;
+
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.72);
+
+	.right-menu{
+		text-align: right;
+		white-space: nowrap;
+	}
+
+	header{
+		font-weight: normal;
+	}
+
+	button{
+		margin: 0;
+		margin-left: 15px;
+		padding: 7px 15px;
+		display: inline;
+		border: none;
+		border-radius: $std-radius;
+		background-color: #373B41;
+		color: white;
+		font-size: 16px;
+		cursor: pointer;
+		border-top: 1px solid #404855;
+		border-bottom: 2px solid #1E232B;
+	}
 }
 
 #editor{
 	position: absolute;
-	top: 0;
+	top: $top-bar-height;
 	left: 0;
 	width: 50%;
 	bottom: 0;
 	margin: 0;
 
+	z-index: 1001;
+
 	border: 4px solid #373B41;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.72);
 
 	-webkit-transition:
 		bottom $ui-transition,
@@ -47,10 +130,10 @@ body{
 
 #messages{
 	position: absolute;
-	bottom: -$messagesHeight;
+	bottom: -$messages-height;
 	left: 0;
 	width: 50%;
-	height: $messagesHeight;
+	height: $messages-height;
 
 	padding: 20px;
 	overflow: hidden;
@@ -106,8 +189,184 @@ body{
 	background-color: black;
 }
 
-.error-line{
-	background-color: rgba(255, 0, 20, 0.15);
+#overlay{
+	display: none;
+	$width: 60%;
+	$height: 97%;
+	$center-x: true;
+	$center-y: true;
+	position: absolute;
+	@if $center-y {
+		top: (100% - $height) * .5;
+	}@else{
+		top: 0;
+	}
+
+	@if $center-x {
+		right: (100% - $width) * .5;
+	}@else{
+		right: 0;	
+	}
+		
+	width: $width;
+	height: $height;
+	margin: 0;
+
+	z-index: 10000;
+
+	background-color: white;
+
+	box-shadow: 0px 0px 30px rgba(0,0,0,0.5);
+
+	.close{
+		$border-thickness: 2px;
+		$color: #CCC;
+		$color-hover: $std-dark-color;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: $std-pad;
+		height: $std-pad;
+		line-height: $std-pad - $border-thickness * 2.0;
+		text-align: center;
+		margin: $std-pad * .5;
+		z-index: 10001;
+		cursor: pointer;
+		background-color: white;
+		color: $color;
+		border: $border-thickness solid $color;
+		border-radius: $std-radius;
+
+		-webkit-transition:
+			color 0.1s ease-in-out,
+			border-color 0.1s ease-in-out;
+		transition:
+			color 0.1s ease-in-out,
+			border-color 0.1s ease-in-out;
+
+		&:hover{
+			color: $color-hover;
+			border-color: $color-hover;
+			background-color: #FAFAFA;
+		}
+	}
+
+	.scroller{
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: scroll;
+	}
+
+	.content{}
+}
+
+.page{
+	margin: $std-pad;
+
+	hr{
+		border: 1px dashed;
+	}
+
+	h2{
+		margin-top: 60px;
+	}
+
+	table{
+		width: 100%;
+		// table-layout: fixed;
+		border-radius: $std-radius;
+		border-collapse: collapse;
+		overflow: hidden;
+
+		tr:not(:last-child){
+			th{
+				border-bottom: 1px solid #DDD;
+			}
+			td{
+				border-bottom: 1px solid #EFEFEF;
+			}
+		}
+
+		th{
+			width: 25%;
+			text-align: left;
+			padding: $std-pad*.25 $std-pad * .75;
+
+			background-color: #EFEFEF;
+			color: #333;
+
+			.info{
+				display: block;
+				font-weight: normal;
+				font-style: italic;
+				font-size: 0.9em;
+			}
+
+			&.mono{
+				font-family: $font-stack-mono;
+			}
+		}
+
+		td{
+			padding: $std-pad*.25 $std-pad * .5;
+
+			background-color: #FAFAFA;
+			color: #333;
+
+			&:nth-child(2){
+				padding-left: $std-pad * .75;
+			}
+
+			&:last-child{
+				padding-right: $std-pad * .75;
+			}
+		}
+
+		&.mono-title{
+			th{
+				font-family: $font-stack-mono;
+			}
+		}
+
+		&.dark{
+			tr:not(:last-child){
+				th{
+					border-bottom: 1px solid #444;
+				}
+				td{
+					border-bottom: 1px solid #DDD;
+				}
+			}
+
+			th{
+				background-color: $std-dark-color;
+				color: #CCC;
+			}
+
+			td{
+				background-color: #EFEFEF;
+				color: #444;
+			}
+		}
+	}
+}
+
+.ace_error-line{
+	background-color: rgba(255, 0, 20, 0.08);
 	position: absolute;
 	z-index: 4;
+}
+
+pre.ace-static{
+	display: block;
+}
+
+code.ace-static{
+	display: inline-block;
+	//disable bg
+	& > [class^="ace-"]{
+		background-color: transparent;
+	}
 }
