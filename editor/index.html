@@ -10,6 +10,7 @@
 	<style id="ace-tomorrow-night">.ace-tomorrow-night .ace_gutter {background: #25282c;color: #C5C8C6}.ace-tomorrow-night .ace_print-margin {width: 1px;background: #25282c}.ace-tomorrow-night {background-color: #1D1F21;color: #C5C8C6}.ace-tomorrow-night .ace_cursor {color: #AEAFAD}.ace-tomorrow-night .ace_marker-layer .ace_selection {background: #373B41}.ace-tomorrow-night.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #1D1F21;border-radius: 2px}.ace-tomorrow-night .ace_marker-layer .ace_step {background: rgb(102, 82, 0)}.ace-tomorrow-night .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid #4B4E55}.ace-tomorrow-night .ace_marker-layer .ace_active-line {background: #282A2E}.ace-tomorrow-night .ace_gutter-active-line {background-color: #282A2E}.ace-tomorrow-night .ace_marker-layer .ace_selected-word {border: 1px solid #373B41}.ace-tomorrow-night .ace_invisible {color: #4B4E55}.ace-tomorrow-night .ace_keyword,.ace-tomorrow-night .ace_meta,.ace-tomorrow-night .ace_storage,.ace-tomorrow-night .ace_storage.ace_type,.ace-tomorrow-night .ace_support.ace_type {color: #B294BB}.ace-tomorrow-night .ace_keyword.ace_operator {color: #8ABEB7}.ace-tomorrow-night .ace_constant.ace_character,.ace-tomorrow-night .ace_constant.ace_language,.ace-tomorrow-night .ace_constant.ace_numeric,.ace-tomorrow-night .ace_keyword.ace_other.ace_unit,.ace-tomorrow-night .ace_support.ace_constant,.ace-tomorrow-night .ace_variable.ace_parameter {color: #DE935F}.ace-tomorrow-night .ace_constant.ace_other {color: #CED1CF}.ace-tomorrow-night .ace_invalid {color: #CED2CF;background-color: #DF5F5F}.ace-tomorrow-night .ace_invalid.ace_deprecated {color: #CED2CF;background-color: #B798BF}.ace-tomorrow-night .ace_fold {background-color: #81A2BE;border-color: #C5C8C6}.ace-tomorrow-night .ace_entity.ace_name.ace_function,.ace-tomorrow-night .ace_support.ace_function,.ace-tomorrow-night .ace_variable {color: #81A2BE}.ace-tomorrow-night .ace_support.ace_class,.ace-tomorrow-night .ace_support.ace_type {color: #F0C674}.ace-tomorrow-night .ace_heading,.ace-tomorrow-night .ace_markup.ace_heading,.ace-tomorrow-night .ace_string {color: #B5BD68}.ace-tomorrow-night .ace_entity.ace_name.ace_tag,.ace-tomorrow-night .ace_entity.ace_other.ace_attribute-name,.ace-tomorrow-night .ace_meta.ace_tag,.ace-tomorrow-night .ace_string.ace_regexp,.ace-tomorrow-night .ace_variable {color: #CC6666}.ace-tomorrow-night .ace_comment {color: #969896}.ace-tomorrow-night .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNgYGBgYHB3d/8PAAOIAdULw8qMAAAAAElFTkSuQmCC) right repeat-y}</style>
 </head>
 <body>
+
 	<div id="top-bar">
 		<div class="left-menu">
 			<header>Shader Workshop</header>
@@ -19,6 +20,7 @@
 			<button class="fullscreen">Fullscreen</button>
 		</div>
 	</div>
+
 	<pre id="editor" class="ace-tomorrow-night ace_dark">void main(){
     vec3 col = vec3(0);
     vec2 r = r;
@@ -34,8 +36,14 @@
     
 	gl_FragColor = vec4(col, 1.0);
 }</pre>
-	<div id="messages"><div class="content"></div></div>
+
+	<div id="messages">
+		<div class="content"></div>
+	</div>
+
 	<canvas id="preview"></canvas>
+
+	<!-- cheat sheet -->
 	<div id="overlay">
 		<div class="close">X</div>
 		<div class="scroller">
@@ -65,7 +73,7 @@ void main(){
 						<li>You can set vector properties with dot syntax: <code>col.r = 4.2;</code></li>
 						<li>Vectors have properties <code>.x, .y, .z, .w</code></li>
 						<li>You can also use <code>.r, .g, .b, .a</code></li>
-						<li>Vectors are created with the following syntax <pre>vec2 point = vec2(1.3, 4.2);</pre> where the number after 'vec' sets the number of properties</li>
+						<li>Vectors are constructed with the following syntax <pre>vec2 point = vec2(1.3, 4.2); //vec2(x, y)</pre> where the number after 'vec' sets the number of properties</li>
 						<li>Most math functions are available (sin, cos, floor etc)</li>
 
 					</ul>
@@ -78,10 +86,13 @@ void main(){
 							<th>PI <span class="info">float</span></th><td><code>3.14159265359</code></td>
 						</tr>
 						<tr>
-							<th>r <span class="info">vec2</span></th><td>Distance from center. The x-axis is scaled to account for aspect ratio. Ranges from -0.5 to 0.5 on the y-axis</td>
+							<th>r <span class="info">vec2</span></th><td>Distance from center. Ranges from -0.5 to 0.5 across the viewport on the y-axis. The x-axis is scaled to account for aspect ratio.</td>
 						</tr>
 						<tr>
 							<th>uv <span class="info">vec2</span></th><td>Pixel position where (0, 0) is bottom left and (1, 1) is top right</td>
+						</tr>
+						<tr>
+							<th>resolution <span class="info">vec2</span></th><td>Width and height of canvas in pixels</td>
 						</tr>
 					</table>
 					<h4>Functions</h4>
@@ -98,20 +109,36 @@ void main(){
 					</table>
 
 					<h2 id="glsl-language-features">Language Features</h2>
-					<h4>Syntax</h4>
-					<p>Function definitions require a return type and a type for each argument. For example
+					<h4>Variables</h4>
+					<p>Variables must be defined with a type. The type comes before the variable name.</p>
+					<pre>
+float someVar = 42.0;
+int anotherVar = 18;
+</pre>
+					<p>Types with properties like vectors and matricies require constructing, this is done by calling the type's name as a function and passing the properties as arguments.</p>
+					<pre>
+vec3 color = vec3(1.0, 2.0, 3.0); //vec3(x, y, z)
+</pre>
+					<h4>Functions</h4>
+					<p>Function definitions require a return type and a type for each argument. For example</p>
 					<pre>
 float lengthSquared(vec2 v){
-	return (v.x * v.x) + (v.y * v.y) + (v.z * v.z);
+	return pow(length(v), 2.0);
 }
 					</pre>
-					or
+					<p>or</p>
 					<pre>
 void doThing(float value1, vec4 value2){
 	//does the thing
 }
 					</pre>
-					</p>
+					<p>Multiple function definitions can have the same name but different parameters (function overloading)</p>
+					<pre>
+float angle();
+float angle(vec2 r);
+float angle(vec2 r, vec2 o);
+					</pre>
+					<p>Functions can only be called after they've been defined. Unless function prototypes are used, only functions defined above the point of execution can be called.</p>
 					<h4>Types</h4>
 					<table class="mono-title">
 						<tr>
