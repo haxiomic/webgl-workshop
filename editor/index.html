@@ -20,7 +20,19 @@
 		</div>
 	</div>
 	<pre id="editor" class="ace-tomorrow-night ace_dark">void main(){
-	gl_FragColor = vec4(uv, sin(time)*.5 + .5, 1.0);
+    vec3 col = vec3(0);
+    vec2 r = r;
+
+    float a = angle(r);
+    r += normalize(r) * a * 0.4;
+    
+    float len = length(r);
+    
+    if(length(r) < .5){
+        col = vec3(uv + vec2(sin(time), cos(time))*.25, sin(time + a)*.5 + .5) * pow((.5 - length(r))*2., 1./7.);
+    }
+    
+	gl_FragColor = vec4(col, 1.0);
 }</pre>
 	<div id="messages"><div class="content"></div></div>
 	<canvas id="preview"></canvas>
