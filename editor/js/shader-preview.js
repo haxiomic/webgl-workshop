@@ -37,7 +37,10 @@ var ShaderPreview = DEMO.CanvasShader.extend(function(canvas){
 
 		'void main(){',
 			'uv = (position.xy + vec2(1.0))*.5; //converts from clip space to graph space',
-			'r = (uv - vec2(0.5)) * vec2(resolution.x / resolution.y, 1.0);',
+
+			//fit to viewport
+			'float aspect = resolution.x/resolution.y;',
+			'r = (uv - vec2(0.5)) * (aspect > 1.0 ? vec2(aspect, 1.0) : vec2(1.0, 1.0/aspect) ) ;',
 
 			'gl_Position = vec4(position, .0, 1.0);',
 		'}'

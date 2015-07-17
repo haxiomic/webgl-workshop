@@ -3,6 +3,7 @@
 <head>
 	<title>Shader Workshop</title>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="fonts/icons/font.css">
 	<link rel="stylesheet" type="text/css" href="css/app.css">
 
 	<style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;border-radius: 2px;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}</style>
@@ -16,8 +17,8 @@
 			<header>Shader Workshop</header>
 		</div>
 		<div class="right-menu">
-			<button class="cheat-sheet">Cheat Sheet</button>
-			<button class="fullscreen">Fullscreen</button>
+			<button class="cheat-sheet"><span class="icon-edu"></span> <span>Cheat Sheet</span></button>
+			<button class="fullscreen"><span class="icon-screen-full"></span></button>
 		</div>
 	</div>
 
@@ -45,17 +46,22 @@
 
 	<!-- cheat sheet -->
 	<div id="overlay">
-		<div class="close">X</div>
+		<div class="close"><span class="icon-cross"></span></div>
 		<div class="scroller">
 			<div class="content">
 				<div class="page">
-					<h1>Shader Cheatsheet</h1>
-					<h6>(just the important bits)</h6>
-					<hr>
-					<p>This is a quick reference for the most used bits of GLSL. Not everything is here so you can find a</p>
+					<header>
+						<h1>Shader Cheatsheet</h1>
+						<h6>(just the important bits)</h6>
+						<hr>
+					</header>
+
+					<p>This is a quick reference for the most used bits of GLSL. Not everything is here so to learn more I recommend these links:</p>
 					<ul>
-						<li><a href="https://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf" target="_blank">complete reference here</a></li>
-						<li><a href="http://www.shaderific.com/glsl-functions/" target="_blank">list of built-in functions here</a></li>
+						<li><a href="http://patriciogonzalezvivo.com/2015/thebookofshaders/">The Book Of Shaders</a></li>
+						<li><a href="https://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf" target="_blank">Complete WebGL reference</a></li>
+						<li><a href="http://www.shaderific.com/glsl-functions/" target="_blank">List of built-in functions in GLSL</a></li>
+						<li><a href="https://en.wikibooks.org/wiki/GLSL_Programming/Vector_and_Matrix_Operations" target="_blank">GLSL language guide</a></li>
 					</ul>
 
 					<h2 id="glsl-tldr">TL;DR</h2>
@@ -69,33 +75,46 @@ void main(){
 							</pre>
 						</li>
 
-						<li>The aim is to set the value of the vector <code>gl_FragColor</code></li>
+						<li>Pixels are colored by setting the value of the vector <code>gl_FragColor</code></li>
 						<li>You can set vector properties with dot syntax: <code>col.r = 4.2;</code></li>
-						<li>Vectors have properties <code>.x, .y, .z, .w</code></li>
-						<li>You can also use <code>.r, .g, .b, .a</code></li>
+						<li>Colors values range from 0 to 1; <code>gl_FragColor.r = 1.0;</code> sets the red element to full</li>
+						<li>Vectors have properties <code>.x, .y, .z, .w</code> but you can also use <code>.r, .g, .b, .a</code></li>
 						<li>Vectors are constructed with the following syntax <pre>vec2 point = vec2(1.3, 4.2); //vec2(x, y)</pre> where the number after 'vec' sets the number of properties</li>
 						<li>Most math functions are available (sin, cos, floor etc)</li>
-
+						<li>GLSL is very dumb with data-types:
+						<pre>
+1.0 + 2;   // Error: wrong operand types
+1.0 + 2.0; // 3.0
+						</pre>
+						The error is because <code>1.0</code> is a <code>float</code> and <code>2</code> is an <code>int</code></li>
 					</ul>
 
+					<hr>
+
 					<h2 id="glsl-extras">Extra Variables and Functions</h2>
-					<p>(These are variables and functions I've setup for this editor, they are not available by default in GLSL.)</p>
-					<h4>Variables</h4>
+					<p><i>These are variables and functions I've setup for this editor, they are not available by default in GLSL</i></p>
+					<h3>Variables</h3>
 					<table class="mono-title">
 						<tr>
-							<th>PI <span class="info">float</span></th><td><code>3.14159265359</code></td>
-						</tr>
-						<tr>
-							<th>r <span class="info">vec2</span></th><td>Distance from center. Ranges from -0.5 to 0.5 across the viewport on the y-axis. The x-axis is scaled to account for aspect ratio.</td>
+							<th>r <span class="info">vec2</span></th><td>Distance from center. Ranges from -0.5 to 0.5 along the shortest axis of the viewport. The other axis is scaled to account for aspect ratio.</td>
 						</tr>
 						<tr>
 							<th>uv <span class="info">vec2</span></th><td>Pixel position where (0, 0) is bottom left and (1, 1) is top right</td>
 						</tr>
 						<tr>
+							<th>time <span class="info">float</span></th><td>Time in seconds since the demo started</td>
+						</tr>
+						<tr>
 							<th>resolution <span class="info">vec2</span></th><td>Width and height of canvas in pixels</td>
 						</tr>
 					</table>
-					<h4>Functions</h4>
+					<h3>Constants</h3>
+					<table class="mono-title">
+						<tr>
+							<th>PI <span class="info">float</span></th><td><code>3.14159265359</code></td>
+						</tr>
+					</table>
+					<h3>Functions</h3>
 					<table class="mono-title">
 						<tr>
 							<th>angle() <span class="info">float</span></th><td>Angle of pixel about center from 0 to 2π</td>
@@ -108,19 +127,59 @@ void main(){
 						</tr>-->
 					</table>
 
+					<hr>
+
 					<h2 id="glsl-language-features">Language Features</h2>
-					<h4>Variables</h4>
-					<p>Variables must be defined with a type. The type comes before the variable name.</p>
+
+					<p>GLSL is a very simple language, it supports only a subset of the features normally available in a programming language - most notably, in this version of GLSL there are no arrays, strings, switch statements, classes, console logging or while loops. However, GLSL does have powerful vector and matrix types. Below is an overview of the most commonly used features.</p>
+
+					<h3>Variables</h3>
+					<p>Variables must be defined with a type. The type comes before the variable name</p>
 					<pre>
 float someVar = 42.0;
 int anotherVar = 18;
-</pre>
-					<p>Types with properties like vectors and matricies require constructing, this is done by calling the type's name as a function and passing the properties as arguments.</p>
+					</pre>
+					<p>Types with properties (like vectors and matricies) require constructing. This is done by calling the type's name as a function and passing the properties as arguments</p>
 					<pre>
-vec3 color = vec3(1.0, 2.0, 3.0); //vec3(x, y, z)
-</pre>
-					<h4>Functions</h4>
-					<p>Function definitions require a return type and a type for each argument. For example</p>
+vec3 color = vec3(0.1, 0.2, 0.3); //vec3(x, y, z)
+					</pre>
+					<p>The individual properties of the object can then be accessed</p>
+					<pre>
+color.x = 1.0
+color.y = 0.5
+color.z = 0.0
+					</pre>
+					<p>Instead of using x, y, z, w, you can access the same properties with r, g, b, a.</p>
+					<p>You can access sub-vectors by using a string of properties (in any order)</p>
+					<pre>
+vec4 fourVector = vec4(1.0, 2.0, 3.0, 4.0);
+vec2 twoVector = fourVector.xy;    //vec2(1.0, 2.0)
+vec3 threeVector = fourVector.zzw; //vec3(3.0, 3.0, 4.0)
+					</pre>
+					<p>This also works for assignment</p>
+					<pre>
+fourVector.xy = vec2(11.0, 12.0);
+//fourVector is now vec4(11.0, 12.0, 3.0, 4.0)
+					</pre>
+
+					<h3>Basic Operations</h3>
+					<p>
+						GLSL supports the standard binary operators <code>*, /, +, -</code>. When performing binary operations, the types must be compatible - GLSL cannot add an <code>int</code> to a <code>float</code>, nor can it automatically convert between them
+					</p>
+					<pre>
+1.0 + 2;   // Error: wrong operand types
+1.0 + 2.0; // 3.0
+					</pre>
+					<p>However, a vector can be multiplied by a <code>float</code> - each element of the vector is multiplied independently</p>
+					<pre>vec2(3.0, 4.0) * 4.0; //vec2(12.0, 16.0);</pre>
+					<p>This works similarly for matricies</p>
+					<p>Other operators include assignment operators <code>*=, /=, +=, -=</code>, used like so</p>
+					<pre>
+someVar += 10.0;
+					</pre>
+
+					<h3>Functions</h3>
+					<p>Function definitions require a return type and a type for each argument</p>
 					<pre>
 float lengthSquared(vec2 v){
 	return pow(length(v), 2.0);
@@ -138,8 +197,46 @@ float angle();
 float angle(vec2 r);
 float angle(vec2 r, vec2 o);
 					</pre>
-					<p>Functions can only be called after they've been defined. Unless function prototypes are used, only functions defined above the point of execution can be called.</p>
-					<h4>Types</h4>
+					<p>Functions can only be called after they've been defined. Unless function prototypes are used, <b>only functions defined above the point of execution can be called.</b> A function prototype is just the function header without the code</p>
+					<pre>
+float lengthSquared(vec2 v);
+					</pre>
+
+					<h3>Flow Control Statements</h3>
+					<p>GLSL supports basic control statements <code>if</code> and <code>for</code> loops - in WebGL <code>while</code> and <code>do while</code> are forbidden. Additionally, the for loop can only contain constants in the condition.</p>
+					<p>The syntax of a <code>if</code> statement is</p>
+					<pre>
+if(a < b){
+	//a is less than b
+}else if(a == b){
+	//a is the same as b
+}else{
+	//a is greater than b
+}
+					</pre>
+					<p>A <code>for</code> loop is</p>
+					<pre>
+for(int i = 0; i < 10; i++){
+	//this run 10 times
+}
+					</pre>
+
+					<h3>Custom Types</h3>
+					<p>You can define custom data types with <code>struct</code></p>
+					<pre>
+struct NewType{
+	float someProp;
+	vec2 otherProp;
+};
+					</pre>
+					<p>Your custom type is constructed in the same way as other types</p>
+					<pre>
+NewType instance = NewType(3.1, vec2(10.0, 0.0));
+instance.someProp; //3.1
+instance.otherProp;	//vec2(10.0, 0.0)
+					</pre>
+
+					<h3>Built-in Types</h3>
 					<table class="mono-title">
 						<tr>
 							<th>bool</th><td>Either <code>true</code> or <code>false</code></td>
@@ -151,31 +248,32 @@ float angle(vec2 r, vec2 o);
 							<th>float</th><td>Number with decimal point (eg: <code>6.283</code>)</td>
 						</tr>
 						<tr>
-							<th>vec2</th><td>Vector with 2 elements, .x, .y (alternatively .r, .g)</td>
+							<th>vec2</th><td>Vector with 2 elements (x, y)</td>
 						</tr>
 						<tr>
-							<th>vec3</th><td>Vector with 3 elements, .x, .y, .z (alternatively .r, .g, .b)</td>
+							<th>vec3</th><td>Vector with 3 elements (x, y, z)</td>
 						</tr>
 						<tr>
-							<th>vec4</th><td>Vector with 4 elements, .x, .y, .z, .w (alternatively .r, .g, .b, .a)</td>
+							<th>vec4</th><td>Vector with 4 elements (x, y, z, w)</td>
+						</tr>
+
+						<tr>
+							<th>mat2</th><td>2x2 Matrix</td>
+						</tr>
+						<tr>
+							<th>mat3</th><td>3x3 Matrix</td>
+						</tr>
+						<tr>
+							<th>mat4</th><td>4x4 Matrix</td>
+						</tr>
+						<tr>
+							<th>void</th><td>Used when there's no return type or explicitly define empty parameters</td>
 						</tr>
 					</table>
-					<p>...</p>
+					<p>The <span class="mono">vec<i>n</i></span> and <span class="mono">mat<i>n</i></span> types have <code>float</code> elements, for <code>int</code> elements, prefix i and for boolean, prefix b:
+					<pre>bvec2 switches = bvec2(true, false);</pre>
+					</p>
 
-					<h2 id="glsl-common-patterns">Common Patterns</h2>
-					<p>...</p>
-
-					<h2 id="glsl-built-in-functions">Built-in Functions</h2>
-					<p>...</p>
-
-					<h2 id="glsl-built-in-constants">Built-in Constants</h2>
-					<p>...</p>
-
-					<h2 id="glsl-preprocessor">Preprocessor</h2>
-					<h4>Directives</h4>
-					<p>...</p>
-					<h4>Built-in Macros</h4>
-					<p>...</p>
 				</div>
 			</div>
 		</div>

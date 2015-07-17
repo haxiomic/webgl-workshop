@@ -15,11 +15,14 @@ var UI = (function(){
 	pub.preview = document.querySelector('#preview');
 
 	//menu buttons
-	pub.topBar.querySelector('.cheat-sheet').addEventListener('click', function(e){
-		pub.showOverlay();
+	pub.topBar.cheatSheet = pub.topBar.querySelector('.cheat-sheet');
+	pub.topBar.cheatSheet.addEventListener('click', function(e){
+		pub.isOverlayVisible() ? pub.hideOverlay() : pub.showOverlay();
 	});
 
-	pub.topBar.querySelector('.fullscreen').addEventListener('click', function(e){
+
+	pub.topBar.fullscreen = pub.topBar.querySelector('.fullscreen');
+	pub.topBar.fullscreen.addEventListener('click', function(e){
 		pub.fullscreenCanvas();
 	});
 
@@ -149,10 +152,16 @@ var UI = (function(){
 
 	pub.showOverlay = function(){
 		pub.overlay.style.display = 'block';
+		pub.topBar.cheatSheet.classList.toggle('active', true);
 	}
 
 	pub.hideOverlay = function(){
 		pub.overlay.style.display = 'none';
+		pub.topBar.cheatSheet.classList.toggle('active', false);
+	}
+
+	pub.isOverlayVisible = function(){
+		return window.getComputedStyle(UI.overlay).display !== 'none';
 	}
 
 	pub.fullscreenCanvas = function(){
@@ -169,3 +178,5 @@ var UI = (function(){
 
 	return pub;
 })();
+
+UI.showOverlay()

@@ -1,6 +1,7 @@
 $messages-height: 80px;
 $top-bar-height: 55px;
-$ui-transition: 0.2s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+$ui-transition: 0.15s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+$ui-transition-fast: 0.1s ease-out;
 $std-pad: 40px;
 $std-radius: 5px;
 $std-dark-color: #333;
@@ -64,7 +65,7 @@ hr{
 	z-index: 1002;
 	overflow: hidden;
 
-	color: #CCC;
+	color: white;
 
 	font-size: 16px;
 
@@ -79,22 +80,51 @@ hr{
 	}
 
 	header{
+		font-size: 1.1em;
 		font-weight: normal;
 	}
 
 	button{
+		$icon-size: 18px;
+		$font-size: $icon-size * .6;
 		margin: 0;
-		margin-left: 15px;
-		padding: 7px 15px;
+		margin-left: 6px;
+		padding: 5px 12px;
 		display: inline;
 		border: none;
 		border-radius: $std-radius;
 		background-color: #373B41;
-		color: white;
-		font-size: 16px;
+		color: inherit;
+		font-size: $font-size;
+		font-weight: normal;
+		line-height: $icon-size;
 		cursor: pointer;
 		border-top: 1px solid #404855;
 		border-bottom: 2px solid #1E232B;
+
+		-webkit-transition:
+			border-top-color $ui-transition-fast,
+			background-color $ui-transition-fast;
+		transition:
+			border-top-color $ui-transition-fast,
+			background-color $ui-transition-fast;
+
+		&:hover, &.active{
+			border-top-color: #4C525D;
+			background-color: #404855;
+		}
+
+		span{
+			float: left;
+		}
+
+		[class^="icon-"], [class*=" icon-"]{
+			font-size: $icon-size;
+			&:not(:last-child){
+				margin-right: $font-size * .5;
+			}
+		}
+
 	}
 }
 
@@ -129,7 +159,7 @@ hr{
 }
 
 #messages{
-	position: absolute;
+	position: fixed;
 	bottom: -$messages-height;
 	left: 0;
 	width: 50%;
@@ -194,7 +224,7 @@ hr{
 	$width: 50%;
 	$height: 100%;
 	$center-x: false;
-	$center-y: true;
+	$center-y: false;
 	position: absolute;
 	@if $center-y {
 		top: (100% - $height) * .5;
@@ -237,12 +267,19 @@ hr{
 		border: $border-thickness solid $color;
 		border-radius: $std-radius;
 
+		font-size: 20px;
+
 		-webkit-transition:
-			color 0.1s ease-in-out,
-			border-color 0.1s ease-in-out;
+			color $ui-transition-fast,
+			border-color $ui-transition-fast;
 		transition:
-			color 0.1s ease-in-out,
-			border-color 0.1s ease-in-out;
+			color $ui-transition-fast,
+			border-color $ui-transition-fast;
+
+		*{
+			display: block;
+			line-height: $std-pad - $border-thickness * 2.0;
+		}
 
 		&:hover{
 			color: $color-hover;
@@ -257,6 +294,7 @@ hr{
 		margin: 0;
 		padding: 0;
 		overflow: scroll;
+		-webkit-overflow-scrolling: touch;
 	}
 
 	.content{}
@@ -266,11 +304,36 @@ hr{
 	margin: $std-pad;
 
 	hr{
-		border: 1px dashed;
+		margin: 40px 0;
+		border: none;
+		border-top: 1px solid #EEE;
 	}
 
-	h2{
-		margin-top: 60px;
+	/* spacing */
+	// h2{
+	// 	margin-top: 70px;
+	// }
+
+	h3, h4{
+		margin-top: 40px;
+	}
+
+	ul{
+		margin-left: $std-pad * .5;
+		
+		li{
+			margin-bottom: 5px;
+		}
+	}
+
+	header{
+		hr{
+			border: 1px dashed;
+		}		
+	}
+
+	pre{
+		margin-left: $std-pad * .5;
 	}
 
 	table{
@@ -351,6 +414,10 @@ hr{
 			}
 		}
 	}
+}
+
+.mono{
+	font-family: $font-stack-mono;
 }
 
 .ace_error-line{
