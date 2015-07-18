@@ -4,6 +4,7 @@ var ShaderPreview = DEMO.CanvasShader.extend(function(canvas){
 
 	this.pixelShaderHeader += [
 		'varying vec2 r;',
+		'uniform vec3 mouse;',
 
 		'#define PI 3.14159265359',
 
@@ -54,10 +55,27 @@ var ShaderPreview = DEMO.CanvasShader.extend(function(canvas){
 
 ShaderPreview.SHADER_ERROR = 'shader-error';
 
+ShaderPreview.prototype.render = function(dt){
+	var gl = this.gl;
+	var program = this.program;
+
+	if(!program) return;
+
+	gl.useProgram(program);
+	//set mouse uniform if is down
+	gl.uniform3f(program.uMouse, this.mouse.x / this.width(), this.mouse.y / this.height(), this.mouseDown ? 1.0 : 0.0);
+
+	//super
+	ShaderPreview.parent.prototype.render.call(this, dt);
+}
+
 ShaderPreview.prototype._compileShaders = function(){
 	try{
 		//super
 		ShaderPreview.parent.prototype._compileShaders.call(this);
+
+		this.program.uMouse = this.gl.getUniformLocation(this.program, 'mouse');
+
 		return true;
 	}catch(e){
 		//process errors
@@ -94,6 +112,8 @@ ShaderPreview.prototype._compileShaders = function(){
 				original: e
 			});
 			break;
+			default:
+			console.log('unknown error: ', e);
 		}
 		return false;
 	}

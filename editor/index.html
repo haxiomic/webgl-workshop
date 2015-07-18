@@ -64,6 +64,8 @@
 						<li><a href="https://en.wikibooks.org/wiki/GLSL_Programming/Vector_and_Matrix_Operations" target="_blank">GLSL language guide</a></li>
 					</ul>
 
+					<hr>
+
 					<h2 id="glsl-tldr">TL;DR</h2>
 					<ul>
 						<li>Shader code is run on each pixel separately</li>
@@ -105,6 +107,9 @@ void main(){
 							<th>time <span class="info">float</span></th><td>Time in seconds since the demo started</td>
 						</tr>
 						<tr>
+							<th>mouse <span class="info">vec3</span></th><td>Coordinate of mouse where (0, 0) is bottom left and (1, 1) is top right. <code>mouse.z</code> is 1.0 when mouse is down and 0.0 otherwise</td>
+						</tr>
+						<tr>
 							<th>resolution <span class="info">vec2</span></th><td>Width and height of canvas in pixels</td>
 						</tr>
 					</table>
@@ -131,7 +136,7 @@ void main(){
 
 					<h2 id="glsl-language-features">Language Features</h2>
 
-					<p>GLSL is a very simple language, it supports only a subset of the features normally available in a programming language - most notably, in this version of GLSL there are no arrays, strings, switch statements, classes, console logging or while loops. However, GLSL does have powerful vector and matrix types. Below is an overview of the most commonly used features.</p>
+					<p>GLSL is a very simple language, it supports only a subset of the features normally available in a programming language - most notably, in this version of GLSL there are no arrays, strings, switch statements, classes, console logging or while loops. However, GLSL does have powerful vector and matrix types. Below is an overview of the most commonly used features (but there are others not touched upon).</p>
 
 					<h3>Variables</h3>
 					<p>Variables must be defined with a type. The type comes before the variable name</p>
@@ -267,7 +272,7 @@ instance.otherProp;	//vec2(10.0, 0.0)
 							<th>mat4</th><td>4x4 Matrix</td>
 						</tr>
 						<tr>
-							<th>void</th><td>Used when there's no return type or explicitly define empty parameters</td>
+							<th>void</th><td>Used when there's no return type or to explicitly define empty parameters</td>
 						</tr>
 					</table>
 					<p>The <span class="mono">vec<i>n</i></span> and <span class="mono">mat<i>n</i></span> types have <code>float</code> elements, for <code>int</code> elements, prefix i and for boolean, prefix b:

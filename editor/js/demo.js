@@ -201,9 +201,9 @@ DEMO.CanvasShader = DEMO.Demo.extend(function(canvas, fragmentShader){
 	/* ---- Upload Geometry ---- */
 	var vertices = [
 		-1,  1,   //  0---2
-	    -1, -1,   //  |  /|
-	     1,  1,   //  | / |
-	     1, -1,   //  1---3
+		-1, -1,   //  |  /|
+		 1,  1,   //  | / |
+		 1, -1,   //  1---3
 	]	
 
 	vertices.elementsPerVertex = 2;
@@ -232,9 +232,9 @@ DEMO.CanvasShader.prototype.render = function(dt){
 	//set the vertices as the active geometry
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 	//tell the GPU about the format of the vertices
-    gl.vertexAttribPointer(program.aPositionLoc, vertices.elementsPerVertex, gl.FLOAT, false, 0, 0);
-    //upload the time variable
-    gl.uniform1f(program.uTime, this.time);
+	gl.vertexAttribPointer(program.aPositionLoc, vertices.elementsPerVertex, gl.FLOAT, false, 0, 0);
+	//upload the time variable
+	gl.uniform1f(program.uTime, this.time);
 	//set the draw region and dimension
 	gl.viewport(0, 0, this.width(), this.height());
 	//clear canvas from last draw
@@ -247,7 +247,7 @@ DEMO.CanvasShader.prototype.setSize = function(w, h){
 	this.canvas.width = w;
 	this.canvas.height = h;
 	//update resolution uniform
-    this.gl.useProgram(this.program);
+	this.gl.useProgram(this.program);
 	this.gl.uniform2f(this.program.uResolution, this.width(), this.height());
 }
 
@@ -266,7 +266,7 @@ DEMO.CanvasShader.prototype._compileShaders = function(){
 	var geometryShaderSrc = this.geometryShaderSrc;
 	var pixelShaderSrc = this.pixelShaderSrc;
 
-    this.shadersNeedCompile = false;
+	this.shadersNeedCompile = false;
 
 	//remove any old programs
 	if(this.program){
@@ -323,12 +323,12 @@ DEMO.CanvasShader.prototype._compileShaders = function(){
 	program.uResolution = gl.getUniformLocation(program, "resolution");
 
 	//enable vertex position data
-    gl.enableVertexAttribArray(program.aPositionLoc);
+	gl.enableVertexAttribArray(program.aPositionLoc);
 
-    //upload initial uniforms
-    gl.useProgram(program);
-    gl.uniform1f(program.uTime, this.time);
-    gl.uniform2f(program.uResolution, this.width(), this.height());
+	//upload initial uniforms
+	gl.useProgram(program);
+	gl.uniform1f(program.uTime, this.time);
+	gl.uniform2f(program.uResolution, this.width(), this.height());
 }
 
 

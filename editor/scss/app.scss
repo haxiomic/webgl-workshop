@@ -314,6 +314,10 @@ hr{
 	// 	margin-top: 70px;
 	// }
 
+	h1, h2{
+		text-align: center;
+	}
+
 	h3, h4{
 		margin-top: 40px;
 	}
@@ -327,6 +331,7 @@ hr{
 	}
 
 	header{
+		text-align: center;
 		hr{
 			border: 1px dashed;
 		}		

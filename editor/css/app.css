@@ -187,14 +187,18 @@ hr {
     margin: 40px 0;
     border: none;
     border-top: 1px solid #EEE; }
+  .page h1, .page h2 {
+    text-align: center; }
   .page h3, .page h4 {
     margin-top: 40px; }
   .page ul {
     margin-left: 20px; }
     .page ul li {
       margin-bottom: 5px; }
-  .page header hr {
-    border: 1px dashed; }
+  .page header {
+    text-align: center; }
+    .page header hr {
+      border: 1px dashed; }
   .page pre {
     margin-left: 20px; }
   .page table {

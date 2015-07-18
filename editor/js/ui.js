@@ -179,4 +179,4 @@ var UI = (function(){
 	return pub;
 })();
 
-UI.showOverlay()
+// UI.showOverlay()
