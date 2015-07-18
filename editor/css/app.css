@@ -243,6 +243,9 @@ hr {
     .page table.dark td {
       background-color: #EFEFEF;
       color: #444; }
+  .page .more-link {
+    display: block;
+    float: right; }
 
 .mono {
   font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace; }
