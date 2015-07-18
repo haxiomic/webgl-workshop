@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">body{margin: 0;}</style>
+</head>
+<body>
+	<canvas></canvas>
+
+	<script id="vertex-shader" type="x-shader/x-vertex">
+	varying vec3 pos;
+	varying vec3 staticPos;
+
+	void main(){
+		gl_Position	= projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+		pos = (modelViewMatrix * vec4(position, 1.0)).xyz;//position + vec3(.5);
+		staticPos = position + vec3(.5);
+	}
+	</script>
+
+	<script id="fragment-shader" type="x-shader/x-fragment">
+	uniform float time;
+
+	varying vec3 pos;
+	varying vec3 staticPos;
+
+	void main(){
+		vec3 light = vec3(0.0, 0.0, -1.);
+
+		light.y = sin(time) * 1.;
+		light.x = cos(time) * .2;
+
+		float d = distance(light, pos);
+
+		float i = 3.8 / (d*d);
+		i = pow(i, 1.);
+
+		gl_FragColor = vec4(staticPos*i / (pos.z*pos.z), 1.0);
+	}
+	</script>
+
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.js"></script>
+
+	<script type="text/javascript">
+
+		var canvas = document.querySelector('canvas');
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		var w = canvas.clientWidth;
+		var h = canvas.clientHeight;
+
+		var vertexShader = document.querySelector('#vertex-shader').textContent;
+
+		var fragShader = document.querySelector('#fragment-shader').textContent;
+
+		var renderer = new THREE.WebGLRenderer({
+			canvas: canvas,
+			antialias: true,
+			clearColor: 0x000000
+		});
+
+		var camera = new THREE.PerspectiveCamera(60, w/h, 0.01, 1000);
+ 
+		var scene = new THREE.Scene();
+
+		var material = new THREE.MeshNormalMaterial();
+
+		var shaderMaterial = new THREE.ShaderMaterial({
+			vertexShader: vertexShader,
+			fragmentShader: fragShader,
+			uniforms: {
+				time: {
+					type: "f",
+					value: 0.0
+				}
+			}
+		});
+
+
+		var cube = new THREE.Mesh(
+			new THREE.SphereGeometry(0.5, 2, 2),//new THREE.BoxGeometry(1,1,1),
+			shaderMaterial
+		);
+
+		scene.add(cube);
+
+		camera.position.z = 2.0;
+
+		var cv = 0.0005;
+
+		var startTime = Date.now();
+		function loop(){
+			var time = (Date.now() - startTime)/1000;
+
+			shaderMaterial.uniforms.time.value = time;
+
+			// cube.rotation.x += 0.01;
+
+			camera.position.x = Math.sin(time) * 2.0;
+			camera.position.z = Math.cos(time) * 2.0;
+
+			camera.lookAt(cube.position);
+
+			renderer.render(scene, camera);
+
+			requestAnimationFrame(loop);
+		}
+
+		loop();
+	</script>
+</body>
+</html>
