@@ -98,7 +98,7 @@
 			return str;
 		}
 
-		tableStr += '<td>' + shorten(f.descriptions[0]) + '</td>';
+		tableStr += '<td title="'+f.descriptions[0]+'">' + shorten(f.descriptions[0]) + '</td>';
 
 		tableStr += '</tr>';
 	}
