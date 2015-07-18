@@ -92,7 +92,7 @@
 				}
 
 				var ss = str.substr(0, max);
-				str = ss + ' ... ' + '<a class="more-link" href="'+moreInfoURL+'">more</a>';
+				str = ss + ' ... ' + '<a class="more-link" target="_blank" href="'+moreInfoURL+'">more</a>';
 			}
 
 			return str;
