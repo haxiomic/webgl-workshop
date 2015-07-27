@@ -50,12 +50,12 @@ DEMO.Cube1 = DEMO.Demo.extend(function(canvas){
 
 			'float invAspect = resolution.y / resolution.x;',
 
-			'const float fov = 60.0;',
+			'const float fov = 120.0;',
 			'const float near = 0.01;',
 			'const float far = 100.0;',
 
 			//camera perspective transformation matrix
-			'float f = tan(PI*.5 - .5 * radians(fov));',
+			'float f = 1.0 / tan(PI*.5 - .5 * radians(fov));',
 			'const float invRange = 1.0 / (near - far);',
 			'mat4 projectionMatrix = mat4(',
 			'   f * invAspect , 0 , 0                         , 0  , ',

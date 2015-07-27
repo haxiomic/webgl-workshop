@@ -632,8 +632,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 							<li>
 								<div style="margin-bottom: 15px;">Camera Projection Matrix</div>
 								<div style="font-size:0.8em">$$\mathbf{P} = \begin{bmatrix}
-								\tan(\frac{1}{2} F_x) & 0 & 0 & 0 \\ 
-								0 & \tan(\frac{1}{2} F_y) & 0 & 0 \\ 
+								\frac{1}{\tan(\frac{1}{2} F_x)} & 0 & 0 & 0 \\ 
+								0 & \frac{1}{\tan(\frac{1}{2} F_y)} & 0 & 0 \\ 
 								0 & 0 &  \frac{Z_f + Z_n}{Z_n - Z_f} & \frac{2 Z_f Z_n}{Z_n - Z_f} \\ 
 								0 & 0 & -1 & 0
 								\end{bmatrix}$$<br>
