@@ -47,6 +47,10 @@ window.addEventListener('resize', function(e){
 	);
 });
 
+UI.onRestartClicked = function(){
+	shaderPreview.time = 0;
+}
+
 var errorMarkers = [];
 
 shaderPreview.addEventListener(ShaderPreview.SHADER_ERROR, function(data){

@@ -30,7 +30,7 @@ var ShaderPreview = DEMO.CanvasShader.extend(function(canvas){
 		''
 	].join('\n');
 
-	this.geometryShaderSrc = [
+	this.vertexShaderSrc = [
 		'precision mediump float;',
 
 		'attribute vec2 position;',

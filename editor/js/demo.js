@@ -16,18 +16,19 @@ var DEMO = {};
 */
 DEMO.Demo = function(canvas){
 	//private
-	var initTime = Date.now()/1000;
-	var lastTime = initTime;
-
+	var _initSysTime = Date.now()/1000;
+	var _lastGlobalTime = 0;
 	var mainLoop = (function(){
-		if(!this.running) return;
+		this.globalTime = Date.now()/1000 - _initSysTime;
+		var dt = this.globalTime - _lastGlobalTime;
+		_lastGlobalTime = this.globalTime;
 
-		this.time = Date.now()/1000 - initTime;
-		var dt = this.time - lastTime;
-		lastTime = this.time;
+		if(this.running){
+			this.time += dt;
 
-		this.update(this.time);
-		this.render(dt);
+			this.update(this.time, dt);
+			this.render(dt);
+		}
 
 		requestAnimationFrame(mainLoop);
 	}).bind(this);
@@ -35,6 +36,7 @@ DEMO.Demo = function(canvas){
 	//mouse handling
 	this.canvas = canvas;
 	this.running = false;
+	this.globalTime = 0;
 	this.time = 0;
 	this.mouseDown = false;
 	this.mouse = {
@@ -93,7 +95,7 @@ DEMO.Demo.prototype.stop = function(){
 	this.dispatch('stop', this);
 }
 
-DEMO.Demo.prototype.update = function(time){}
+DEMO.Demo.prototype.update = function(time, dt){}
 
 DEMO.Demo.prototype.render = function(dt){}
 
@@ -166,7 +168,7 @@ DEMO.CanvasShader = DEMO.Demo.extend(function(canvas, fragmentShader){
 
 	/* ---- Create Shaders ---- */
 	//the do nothing geometry shader
-	this.geometryShaderSrc = [
+	this.vertexShaderSrc = [
 		'precision mediump float;',
 
 		'attribute vec2 position;',
@@ -256,14 +258,14 @@ DEMO.CanvasShader.prototype.setPixelShader = function(pixelShaderSrc){
 	this.shadersNeedCompile = true;
 }
 
-DEMO.CanvasShader.prototype.setGeometryShader = function(geometryShaderSrc){
-	this.geometryShaderSrc = geometryShaderSrc;
+DEMO.CanvasShader.prototype.setVertexShader = function(vertexShaderSrc){
+	this.vertexShaderSrc = vertexShaderSrc;
 	this.shadersNeedCompile = true;
 }
 
 DEMO.CanvasShader.prototype._compileShaders = function(){
 	var gl = this.gl;
-	var geometryShaderSrc = this.geometryShaderSrc;
+	var vertexShaderSrc = this.vertexShaderSrc;
 	var pixelShaderSrc = this.pixelShaderSrc;
 
 	this.shadersNeedCompile = false;
@@ -274,19 +276,19 @@ DEMO.CanvasShader.prototype._compileShaders = function(){
 	}
 
 	//create and compile
-	var geometryShader = gl.createShader(gl.VERTEX_SHADER);
-	gl.shaderSource(geometryShader, geometryShaderSrc);
-	gl.compileShader(geometryShader);
+	var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+	gl.shaderSource(vertexShader, vertexShaderSrc);
+	gl.compileShader(vertexShader);
 
 	var pixelShader = gl.createShader(gl.FRAGMENT_SHADER);
 	gl.shaderSource(pixelShader, pixelShaderSrc);
 	gl.compileShader(pixelShader);
 
 	//check for compilation errors
-	if(!gl.getShaderParameter(geometryShader, gl.COMPILE_STATUS)){
+	if(!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)){
 		throw {
 			type: 'vs',
-			msg: gl.getShaderInfoLog(geometryShader)
+			msg: gl.getShaderInfoLog(vertexShader)
 		};
 	}
 
@@ -298,16 +300,16 @@ DEMO.CanvasShader.prototype._compileShaders = function(){
 	}
 
 	var program = gl.createProgram();
-	gl.attachShader(program, geometryShader);
+	gl.attachShader(program, vertexShader);
 	gl.attachShader(program, pixelShader);
 	gl.linkProgram(program);
 	this.program = program;
 
 	if(!gl.getProgramParameter(program, gl.LINK_STATUS)){
 		//cleanup shaders
-		gl.detachShader(program, geometryShader);
+		gl.detachShader(program, vertexShader);
 		gl.detachShader(program, pixelShader);
-		gl.deleteShader(geometryShader);
+		gl.deleteShader(vertexShader);
 		gl.deleteShader(pixelShader);
 		throw {
 			type: 'link',

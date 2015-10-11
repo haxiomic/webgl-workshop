@@ -6,20 +6,25 @@ var UI = (function(){
 		'failure'
 	];
 
-
 	//init
 	pub.messagesEl = document.querySelector('#messages');
 	pub.editorEl = document.querySelector('#editor');
 	pub.overlay = document.querySelector('#overlay');
 	pub.topBar = document.querySelector('#top-bar');
 	pub.preview = document.querySelector('#preview');
+	//callbacks
+	pub.onRestartClicked = function(){}
 
 	//menu buttons
+	pub.topBar.restart = pub.topBar.querySelector('.restart');
+	pub.topBar.restart.addEventListener('click', function(e){
+		pub.onRestartClicked();		
+	});
+
 	pub.topBar.cheatSheet = pub.topBar.querySelector('.cheat-sheet');
 	pub.topBar.cheatSheet.addEventListener('click', function(e){
 		pub.isOverlayVisible() ? pub.hideOverlay() : pub.showOverlay();
 	});
-
 
 	pub.topBar.fullscreen = pub.topBar.querySelector('.fullscreen');
 	pub.topBar.fullscreen.addEventListener('click', function(e){
@@ -74,7 +79,6 @@ var UI = (function(){
 	for(var i = 0; i < staticCodes.length; i++){
 		staticCodes[i];
 	}
-
 
 	//initial dataset
 	pub.messagesEl.dataset.shown = parseInt(window.getComputedStyle(pub.messagesEl).bottom) >= 0;
@@ -178,5 +182,3 @@ var UI = (function(){
 
 	return pub;
 })();
-
-// UI.showOverlay()
