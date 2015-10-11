@@ -78,6 +78,7 @@ ShaderPreview.prototype._compileShaders = function(){
 		//super
 		ShaderPreview.parent.prototype._compileShaders.call(this);
 
+		this.time = 0;
 		this.program.uMouse = this.gl.getUniformLocation(this.program, 'mouse');
 
 		return true;
